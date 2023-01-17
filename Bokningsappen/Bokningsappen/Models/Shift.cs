@@ -6,7 +6,17 @@ using System.Threading.Tasks;
 
 namespace Bokningsappen.Models
 {
-    internal class Shift
+    public class Shift
     {
+        public Shift()
+        {
+            Bookings = new HashSet<Booking>();
+        }
+
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public int Time { get; set; }
+
+        public virtual ICollection<Booking> Bookings { get; set; }
     }
 }

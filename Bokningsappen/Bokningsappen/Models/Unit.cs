@@ -6,7 +6,16 @@ using System.Threading.Tasks;
 
 namespace Bokningsappen.Models
 {
-    internal class Unit
+    public class Unit
     {
+        public Unit()
+        {
+            Bookings = new HashSet<Booking>();
+        }
+
+        public int Id { get; set; }
+        public string? Name { get; set; }
+
+        public virtual ICollection<Booking> Bookings { get; set; }
     }
 }
