@@ -16,11 +16,12 @@ namespace Bokningsappen.Logic
                 bool failedLogin = true;
                 while (failedLogin)
                 {
-                    //Console.Clear();
                     Console.Write("Ange ditt användarnamn: ");
                     var username = Console.ReadLine();
                     Console.Write("Ange ditt lösenord: ");
                     var password = Console.ReadLine();
+
+
 
                     var users = database.Users.ToList();
 
@@ -35,13 +36,52 @@ namespace Bokningsappen.Logic
                     }
                     else
                     {
-                        Console.WriteLine("Fel användarnamn eller lösenord, försök igen");
-                        Console.ReadKey();
+                        WrongInput("Fel användarnamn eller lösenord");
+                        if (ExitChoice())
+                        {
+                            return null;
+                        }                     
                     }
                 }
             }
             return null;
         }
+
+        internal static void WrongInput(string instruction)
+        {
+            Console.WriteLine(instruction + " försök igen eller tryck <TAB> för att gå tillbaka");
+        }
+
+        internal static bool ExitChoice()
+        {
+            var key = Console.ReadKey(true).Key;
+            return key == ConsoleKey.Tab;
+        }
+
+
+        internal static void ShowUserMenu(User user)
+        {
+            if (user.Title == "ADM")
+            {
+                Console.Clear();
+                GUI.Menus.AdminMenu(user);
+            }
+            else
+            {
+                Console.Clear();
+                GUI.Menus.StaffMenu(user);
+            }
+        }
+
+        internal static void ActiveChoice(string choice)
+        {
+            Console.WriteLine("Aktivt val:");
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine(choice);
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.WriteLine();
+        }
+
         public static void CheckLogIn(bool failedLogIn, string username, string password)
         {
             using (var database = new MyDbContext())

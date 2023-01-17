@@ -26,13 +26,13 @@ namespace Bokningsappen.Logic
             }
         }
 
-        internal static string GetValidatedStringLength(string length, string instruction)
+        internal static string GetFixedStringLength(string instruction, int length)
         {
             while (true)
             {
                 string? input = GetValidatedString(instruction);
                 string message;
-                if (input.Length == length.Length)
+                if (input.Length == length)
                 {
                     return input;
                 }
@@ -44,6 +44,24 @@ namespace Bokningsappen.Logic
                 Console.WriteLine(message);
             }
         }
+        //internal static string GetValidatedStringLength(string length, string instruction)
+        //{
+        //    while (true)
+        //    {
+        //        string? input = GetValidatedString(instruction);
+        //        string message;
+        //        if (input.Length == length.Length)
+        //        {
+        //            return input;
+        //        }
+        //        else
+        //        {
+        //            message = "Felaktig inmatning, försök igen! ";
+        //        }
+
+        //        Console.WriteLine(message);
+        //    }
+        //}
 
         internal static string ValidateTitle()
         {

@@ -18,17 +18,17 @@ namespace Bokningsappen.Logic
                 Console.Write("Ange följande uppgifter om den anställda:");
                 Console.WriteLine();
                 var newTitle = Validator.ValidateTitle();
-                var newBirthDate = Validator.GetValidatedStringLength("YYYYMMDD-XXXX", "Födelsedatum (YYYYMMDD-XXXX): ");
+                var newBirthDate = Validator.GetFixedStringLength("Födelsedatum (YYYYMMDD-XXXX): ", "YYYYMMDD-XXXX".Length);
                 var newFirstName = Validator.GetValidatedString("Förnamn: ");
                 var newLastName = Validator.GetValidatedString("Efternamn: ");
                 var newAddress = Validator.GetValidatedString("Gatuadress och gatunummer: ");
                 var newPostalCode = Validator.GetValidatedIntInRange("Postnummer: ", 10000, 99999);
                 var newCity = Validator.GetValidatedString("Stad: ");
                 var newCountry = Validator.GetValidatedString("Land: ");
-                var newPhoneNumber = Validator.GetValidatedStringLength("070-1234567", "Telefonnummer: (070-1234567): ");
+                var newPhoneNumber = Validator.GetFixedStringLength("Telefonnummer: (070-1234567): ", "123-1234567".Length);
                 var newEmail = Validator.GetValidatedString("Mailadress: ");
                 var newSalary = Validator.GetValidatedDouble("Timlön (kr): ");
-                var newUserName = Validator.GetValidatedStringLength("aaabbb", "Användarnamn (3 första bokstäverna i förnamnet och efternamnet): ").ToLower();
+                var newUserName = Validator.GetFixedStringLength("Användarnamn (3 första bokstäverna i förnamnet och efternamnet): ".ToLower(), "aaabbb".Length);
                 var newPassWord = Validator.GetValidatedString("Lösenord: ");
 
                 var newUser = new User
@@ -56,65 +56,84 @@ namespace Bokningsappen.Logic
 
         internal static void BookEmployeeForShift()
         {
-            using (var database = new MyDbContext())
+            bool success = false;
+            while (!success)
             {
-                ShowData.ShowEmployees();
-
-                List<int> validUserIds = new();
-                foreach (User user in database.Users)
+                using (var database = new MyDbContext())
                 {
-                    validUserIds.Add(user.Id);
+                    Console.Clear();
+                    ShowData.ShowEmployees();
+
+                    List<int> validUserIds = new();
+                    foreach (User user in database.Users)
+                    {
+                        validUserIds.Add(user.Id);
+                    }
+                    List<int> validShiftIds = new();
+                    foreach (Shift shift in database.Shifts)
+                    {
+                        validShiftIds.Add(shift.Id);
+                    }
+                    List<int> validUnitIds = new();
+                    foreach (Unit unit in database.Units)
+                    {
+                        validUnitIds.Add(unit.Id);
+                    }
+
+                    Console.Write("Ange följande uppgifter för att boka en anställd på passet:");
+                    Console.WriteLine();
+
+                    //skicka tillbaka - 1 på int och null på string för att komma ur metoden?
+                    var newEmId = Validator.GetValidatedIntList(validUserIds, "Den anställdas Id - nummer: ");
+                    if (newEmId == -1) return;
+                    var newShId = Validator.GetValidatedIntList(validShiftIds, "Skiftets Id-nummer (Fm = 5, Em = 6, Natt = 7): ");
+                    var newUnId = Validator.GetValidatedIntList(validUnitIds, "Avdelningens Id-nummer (Freja 1 = 1, Freja 2 = 2, Freja 3 = 3): ");
+                    var newYear = Validator.GetValidatedIntInRange("År (YYYY): ", 2023, 2023);
+                    var newWeek = Validator.GetValidatedIntInRange("Vecka: ", 1, 52);
+                    var newDay = Validator.GetValidatedIntInRange("Dag (1-7): ", 1, 7);
+
+
+                    var newBooking = new Booking
+                    {
+                        UserId = newEmId,
+                        ShiftId = newShId,
+                        UnitId = newUnId,
+                        Year = newYear,
+                        Week = newWeek,
+                        Day = newDay
+
+                    };
+
+
+                    var bookings = database.Bookings.Where(b => newShId == b.ShiftId && newUnId == b.UnitId && newYear == b.Year && newWeek == b.Week && newDay == b.Day);
+
+                    var occupiedUser = database.Bookings.Where(b => newEmId == b.UserId && newShId == b.ShiftId && newYear == b.Year && newWeek == b.Week && newDay == b.Day);
+
+                    string printInfo = "";
+                    bool freeShift = !bookings.Any();
+                    bool freeUser = !occupiedUser.Any();
+                    if (freeShift)
+                    {
+                        if (freeUser)
+                        {
+                            printInfo = "Bokningen genomförd";
+                            database.Add(newBooking);
+                            success = true;
+                        }
+                        else
+                        {
+                            printInfo = "Vikarien är redan bokad på en annan avdelning detta tillfälle, välj annan vikarie";
+                        }
+                    }
+                    else
+                    {
+                        printInfo = "Detta skift är redan bokat, vänligen välj ett annat datum";
+                    }
+
+                    Console.WriteLine(printInfo);
+                    database.SaveChanges();
+                    Console.ReadKey();
                 }
-                List<int> validShiftIds = new();
-                foreach (Shift shift in database.Shifts)
-                {
-                    validShiftIds.Add(shift.Id);
-                }
-                List<int> validUnitIds = new();
-                foreach (Unit unit in database.Units)
-                {
-                    validUnitIds.Add(unit.Id);
-                }
-
-
-                Console.Write("Ange följande uppgifter för att boka en anställd på passet:");
-                Console.WriteLine();
-
-                var newEmId = Validator.GetValidatedIntList(validUserIds, "Den anställdas Id - nummer: ");
-                var newShId = Validator.GetValidatedIntList(validShiftIds, "Skiftets Id-nummer (Fm = 5, Em = 6, Natt = 7): ");
-                var newUnId = Validator.GetValidatedIntList(validUnitIds, "Avdelningens Id-nummer (Freja 1 = 1, Freja 2 = 2, Freja 3 = 3): ");
-                var newYear = Validator.GetValidatedIntInRange("År (YYYY): ", 2023, 2023);
-                var newWeek = Validator.GetValidatedIntInRange("Vecka: ", 1, 52);
-                var newDay = Validator.GetValidatedIntInRange("Dag (1-7): ", 1, 7);
-
-
-                var newBooking = new Booking
-                {
-                    UserId = newEmId,
-                    ShiftId = newShId,
-                    UnitId = newUnId,
-                    Year = newYear,
-                    Week = newWeek,
-                    Day = newDay
-
-                };
-
-                var bookings = database.Bookings.Where(b => newShId == b.ShiftId && newUnId == b.UnitId && newYear == b.Year && newWeek == b.Week && newDay == b.Day);
-
-                string printInfo = "";
-
-                if (!bookings.Any())
-                {
-                    printInfo = "Bokningen genomförd";
-                    database.Add(newBooking);
-                }
-                else
-                {
-                    printInfo = "Detta skift är redan bokat, vänligen välj ett annat datum";
-                }
-
-                Console.WriteLine(printInfo);
-                database.SaveChanges();
             }
         }
 

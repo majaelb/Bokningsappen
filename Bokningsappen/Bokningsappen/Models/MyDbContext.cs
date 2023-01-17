@@ -16,7 +16,7 @@ namespace Bokningsappen.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server=.\SQLEXPRESS;Database=BookingCodeFirst;Trusted_Connection=True;");
+            optionsBuilder.UseSqlServer(@"Server=tcp:dbdemomaja.database.windows.net,1433;Initial Catalog=Bokningsappen;Persist Security Info=False;User ID=majasadmin;Password=onXPkQbvhHCh8Ap;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
         }
     }
 }

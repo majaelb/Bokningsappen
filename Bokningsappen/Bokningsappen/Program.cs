@@ -10,7 +10,7 @@ namespace Bokningsappen
             //User user = Helpers.Login();
             //ShowData.ShowLoggedInUsersSalary(user);
             //ShowData.ShowShifts();
-            Menus.StartMenu();
+            GUI.Menus.StartMenu();
             //Menus.ShowLoggedinUsersMenu(user);
             //InsertData.Login();
             //InsertData.AddNewEmployee();
