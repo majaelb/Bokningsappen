@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace Bokningsappen.Logic
 {
-    internal class InsertData
+    internal class InputManager
     {
         internal static void AddNewEmployee()
         {
             using (var database = new MyDbContext())
             {
-                ShowData.ShowEmployees();
+                ShowManager.ShowEmployees();
                 Console.Write("Ange följande uppgifter om den anställda:");
                 Console.WriteLine();
                 var newTitle = Validator.ValidateTitle();
@@ -62,7 +62,7 @@ namespace Bokningsappen.Logic
                 using (var database = new MyDbContext())
                 {
                     Console.Clear();
-                    ShowData.ShowEmployees();
+                    ShowManager.ShowEmployees();
 
                     List<int> validUserIds = new();
                     foreach (User user in database.Users)
@@ -86,7 +86,7 @@ namespace Bokningsappen.Logic
                     //skicka tillbaka - 1 på int och null på string för att komma ur metoden?
                     var newEmId = Validator.GetValidatedIntList(validUserIds, "Den anställdas Id - nummer: ");
                     if (newEmId == -1) return;
-                    var newShId = Validator.GetValidatedIntList(validShiftIds, "Skiftets Id-nummer (Fm = 5, Em = 6, Natt = 7): ");
+                    var newShId = Validator.GetValidatedIntList(validShiftIds, "Skiftets Id-nummer (Fm = 1, Em = 2, Natt = 3): ");
                     var newUnId = Validator.GetValidatedIntList(validUnitIds, "Avdelningens Id-nummer (Freja 1 = 1, Freja 2 = 2, Freja 3 = 3): ");
                     var newYear = Validator.GetValidatedIntInRange("År (YYYY): ", 2023, 2023);
                     var newWeek = Validator.GetValidatedIntInRange("Vecka: ", 1, 52);
@@ -146,7 +146,7 @@ namespace Bokningsappen.Logic
                 bool success = false;
                 while (!success)
                 {
-                    ShowData.ShowAllBookings();
+                    ShowManager.ShowAllBookings();
                     Console.Write("Ange Id för det pass du vill ta bort bokningen från: ");
                     int postId = int.Parse(Console.ReadLine());
                     var deletePost = (from post in db.Bookings

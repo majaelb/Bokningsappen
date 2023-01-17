@@ -182,5 +182,16 @@ namespace Bokningsappen.Logic
                 }
             }
         }
+
+        internal static void WrongInput(string instruction)
+        {
+            Console.WriteLine(instruction + " försök igen eller tryck <TAB> för att gå tillbaka");
+        }
+
+        internal static bool ExitChoice()
+        {
+            var key = Console.ReadKey(true).Key;
+            return key == ConsoleKey.Tab;
+        }
     }
 }

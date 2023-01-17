@@ -4,10 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Bokningsappen.Menus;
 
 namespace Bokningsappen.Logic
 {
-    public class Helpers
+    public class Helper
     {
         public static User? Login()
         {
@@ -20,8 +21,6 @@ namespace Bokningsappen.Logic
                     var username = Console.ReadLine();
                     Console.Write("Ange ditt lösenord: ");
                     var password = Console.ReadLine();
-
-
 
                     var users = database.Users.ToList();
 
@@ -36,8 +35,8 @@ namespace Bokningsappen.Logic
                     }
                     else
                     {
-                        WrongInput("Fel användarnamn eller lösenord");
-                        if (ExitChoice())
+                        Validator.WrongInput("Fel användarnamn eller lösenord");
+                        if (Validator.ExitChoice())
                         {
                             return null;
                         }                     
@@ -47,29 +46,17 @@ namespace Bokningsappen.Logic
             return null;
         }
 
-        internal static void WrongInput(string instruction)
-        {
-            Console.WriteLine(instruction + " försök igen eller tryck <TAB> för att gå tillbaka");
-        }
-
-        internal static bool ExitChoice()
-        {
-            var key = Console.ReadKey(true).Key;
-            return key == ConsoleKey.Tab;
-        }
-
-
         internal static void ShowUserMenu(User user)
         {
             if (user.Title == "ADM")
             {
                 Console.Clear();
-                GUI.Menus.AdminMenu(user);
+                AdminMenu.Run(user);
             }
             else
             {
                 Console.Clear();
-                GUI.Menus.StaffMenu(user);
+                StaffMenu.Run(user);
             }
         }
 
@@ -80,27 +67,6 @@ namespace Bokningsappen.Logic
             Console.WriteLine(choice);
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.WriteLine();
-        }
-
-        public static void CheckLogIn(bool failedLogIn, string username, string password)
-        {
-            using (var database = new MyDbContext())
-            {
-                var users = database.Users.ToList();
-
-                var loggedInUser = users
-                    .SingleOrDefault(u => u.UserName.Equals(username) && u.PassWord.Equals(password));
-                if (loggedInUser != null)
-                {
-                    Console.WriteLine("Välkommen " + loggedInUser.FirstName);
-                    failedLogIn = false;
-                }
-                else
-                {
-                    Console.WriteLine("Fel användarnamn eller lösenord, försök igen");
-                }
-            }
-
-        }
+        }    
     }
 }

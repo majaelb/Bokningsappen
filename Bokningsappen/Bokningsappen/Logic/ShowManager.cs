@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Bokningsappen.Logic
 {
-    internal class ShowData
+    internal class ShowManager
     {
         internal static void ShowEmployees()
         {
@@ -94,7 +94,7 @@ namespace Bokningsappen.Logic
                 Console.WriteLine();
                 foreach (var u in result.Where(u => u.UserId == user.Id))
                 {
-                    Console.WriteLine(u.ShiftName + "    \t\t" + u.UnitName + "  \t\t" + u.Year + "   \t\t" + Enum.GetName(typeof(Enums.Day), u.Day));
+                    Console.WriteLine(u.ShiftName + "    \t\t" + u.UnitName + "  \t\t" + u.Year + "   \t\t" + System.Enum.GetName(typeof(Enum.Day), u.Day));
                 }
                 Console.WriteLine("---------------------------------------------------------------");
             }
@@ -132,7 +132,7 @@ namespace Bokningsappen.Logic
                 Console.WriteLine();
                 foreach (var r in result)
                 {
-                    Console.WriteLine("[" + r.Id + "]" + r.UserName + "    \t\t" + r.ShiftName + "    \t\t" + r.UnitName + "  \t\t" + r.Year + "/" + r.Week + "\t\t" + Enum.GetName(typeof(Enums.Day), r.Day));
+                    Console.WriteLine("[" + r.Id + "]" + r.UserName + "    \t\t" + r.ShiftName + "    \t\t" + r.UnitName + "  \t\t" + r.Year + "/" + r.Week + "\t\t" + System.Enum.GetName(typeof(Enum.Day), r.Day));
                 }
                 Console.WriteLine("---------------------------------------------------------------");
             }
@@ -187,7 +187,7 @@ namespace Bokningsappen.Logic
 
                     for (int day = 1; day <= days.Length; day++)
                     {
-                        Console.Write((Enum.GetName(typeof(Enums.Day), day)));
+                        Console.Write((System.Enum.GetName(typeof(Enum.Day), day)));
 
                         for (int shift = 1; shift <= shifts.Length; shift++)
                         {
@@ -315,7 +315,7 @@ namespace Bokningsappen.Logic
                 foreach (var r in result)
                 {
                     var salary = ((r.Salary * r.ShiftTime) - (r.Salary / 2));
-                    Console.WriteLine(r.UnitName + "  \t\t" + r.ShiftName + "  \t\t" + Enum.GetName(typeof(Enums.Day), r.Day) + "  \t\t" + r.Week + "  \t\t" + salary + " kr");
+                    Console.WriteLine(r.UnitName + "  \t\t" + r.ShiftName + "  \t\t" + System.Enum.GetName(typeof(Enum.Day), r.Day) + "  \t\t" + r.Week + "  \t\t" + salary + " kr");
                     totalSalary += salary;
                 }
                 Console.WriteLine();
@@ -363,7 +363,7 @@ namespace Bokningsappen.Logic
                     foreach (var person in group.OrderBy(p => p.Week))
                     {
                         var salary = ((person.Salary * person.ShiftTime) - (person.Salary / 2));
-                        Console.Write(person.ShiftName + "   \t" + Enum.GetName(typeof(Enums.Day), person.Day) + "\tv." + person.Week + "\t" + salary + " kr");
+                        Console.Write(person.ShiftName + "   \t" + System.Enum.GetName(typeof(Enum.Day), person.Day) + "\tv." + person.Week + "\t" + salary + " kr");
                         totalSalary += salary;
                         Console.WriteLine();
                     }

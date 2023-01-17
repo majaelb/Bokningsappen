@@ -10,7 +10,7 @@ namespace Bokningsappen.Menus
 {
     internal class StartMenu
     {
-        public void Options()
+        public static void Option()
         {
             Console.Clear();
             Console.WriteLine("Välkommen till Omsorgsbolaget. Välj alternativ nedan");
@@ -19,23 +19,23 @@ namespace Bokningsappen.Menus
             Console.WriteLine("[A]vsluta");
         }
 
-        public void Run()
+        public static void Run()
         {
             bool runProgram = true;
             while (runProgram)
             {
-                Options();
+                Option();
                 var key = Console.ReadKey(true).Key;
 
                 switch (key)
                 {
                     case ConsoleKey.L:
                         Console.Clear();
-                        Helpers.ActiveChoice("[L]ogga in");
-                        User user = Helpers.Login();
+                        Helper.ActiveChoice("[L]ogga in");
+                        User user = Helper.Login();
                         if (user != null)
                         {
-                            Helpers.ShowUserMenu(user);
+                            Helper.ShowUserMenu(user);
                         }
                         break;
                     case ConsoleKey.A:

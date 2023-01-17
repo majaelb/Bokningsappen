@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Bokningsappen.Logic
 {
-    internal class Enums
+    internal class Enum
     {
         public enum Month
         {

@@ -1,4 +1,5 @@
 ﻿using Bokningsappen.GUI;
+using Bokningsappen.Menus;
 
 namespace Bokningsappen
 {
@@ -10,7 +11,7 @@ namespace Bokningsappen
             //User user = Helpers.Login();
             //ShowData.ShowLoggedInUsersSalary(user);
             //ShowData.ShowShifts();
-            GUI.Menus.StartMenu();
+            StartMenu.Run();
             //Menus.ShowLoggedinUsersMenu(user);
             //InsertData.Login();
             //InsertData.AddNewEmployee();
