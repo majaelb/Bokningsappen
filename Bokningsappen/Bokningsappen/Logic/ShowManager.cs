@@ -11,6 +11,7 @@ namespace Bokningsappen.Logic
 {
     internal class ShowManager
     {
+        //KLAR
         internal static void ShowEmployees()
         {
             using (var database = new MyDbContext())
@@ -18,14 +19,14 @@ namespace Bokningsappen.Logic
                 var userList = database.Users.ToList();
 
                 Console.WriteLine("Nuvarande anställda: ");
-                Console.WriteLine("-------------------------------------------------------------------------------------------");
-                Console.WriteLine("Id" + "   \t" + "Titel" + "\t" + "Namn" + "  \t\t\t\t" + "Telefonnummer" + "\t\t" + "Timlön");
+                Console.WriteLine("--------------------------------------------------------------------------");
+                Console.WriteLine("Id" + "   \t" + "Titel" + "\t" + "Namn" + "  \t\t\t" + "Telefonnummer" + "\t\t" + "Timlön");
                 Console.WriteLine();
                 foreach (var post in userList.Where(u => u.Title.Equals("USK")))
                 {
                     Console.WriteLine(post.Id + "   \t" + post.Title + "   \t" + post.FirstName + " " + post.LastName + "  \t\t" + post.PhoneNumber + "  \t\t" + post.SalaryPerHour + " kr");
                 }
-                Console.WriteLine("-------------------------------------------------------------------------------------------");
+                Console.WriteLine("--------------------------------------------------------------------------");
             }
         }
 
@@ -100,7 +101,7 @@ namespace Bokningsappen.Logic
                 Console.WriteLine("---------------------------------------------------------------");
             }
         }
-
+        //KLAR
         internal static void ShowAllBookings()
         {
             using (var db = new MyDbContext())
@@ -128,14 +129,14 @@ namespace Bokningsappen.Logic
                              };
 
                 Console.WriteLine("Här är alla bokade pass: ");
-                Console.WriteLine("------------------------------------------------------------------");
-                Console.WriteLine("Vikarie" + "  \t\t" + "Skift" + "   \t\t" + "Avdelning" + "   \t\t" + "År/vecka" + "  \t" + "Dag ");
+                Console.WriteLine("--------------------------------------------------------------------------------------------------------");
+                Console.WriteLine("Vikarie" + "      \t\t\t" + "Skift" + "   \t\t" + "Avdelning" + "   \t\t" + "År/vecka" + "  \t" + "Dag ");
                 Console.WriteLine();
                 foreach (var r in result)
                 {
-                    Console.WriteLine("[" + r.Id + "]" + r.UserName + "    \t\t" + r.ShiftName + "    \t\t" + r.UnitName + "  \t\t" + r.Year + "/" + r.Week + "\t\t" + System.Enum.GetName(typeof(Enum.Day), r.Day));
+                    Console.WriteLine("[" + r.Id + "]" + r.UserName + "      \t\t" + r.ShiftName + "    \t\t" + r.UnitName + "  \t\t" + r.Year + "/" + r.Week + "\t\t" + System.Enum.GetName(typeof(Enum.Day), r.Day));
                 }
-                Console.WriteLine("---------------------------------------------------------------");
+                Console.WriteLine("--------------------------------------------------------------------------------------------------------");
             }
         }
         //korta ner och gör metod av vissa delar

@@ -125,12 +125,20 @@ namespace Bokningsappen.Logic
                     }
                     else
                     {
-                        Console.WriteLine("Felaktig inmatning, försök igen");
+                        Validator.WrongInput("Felaktig inmatning");
+                        if (Validator.ExitChoice())
+                        {
+                            return -1;
+                        }
                     }
                 }
                 else
                 {
-                    Console.WriteLine("Felaktig inmatning, försök igen");
+                    Validator.WrongInput("Felaktig inmatning");
+                    if (Validator.ExitChoice())
+                    {
+                        return -1;
+                    }
                 }
             }
         }
@@ -147,11 +155,11 @@ namespace Bokningsappen.Logic
                 }
                 else
                 {
-                    Validator.WrongInput("Fel användarnamn eller lösenord");
+                    Validator.WrongInput("Felaktig inmatning");
                     if (Validator.ExitChoice())
                     {
                         return -1;
-                    }
+                    }                   
                 }
             }
         }
@@ -168,7 +176,11 @@ namespace Bokningsappen.Logic
                 }
                 else
                 {
-                    Console.WriteLine("Felaktig inmatning, försök igen");
+                    Validator.WrongInput("Felaktig inmatning");
+                    if (Validator.ExitChoice())
+                    {
+                        return -1;
+                    }
                 }
             }
         }
@@ -184,7 +196,7 @@ namespace Bokningsappen.Logic
                 }
                 else
                 {
-                    Validator.WrongInput("Felaktig inmatning, försök igen");
+                    Validator.WrongInput("Felaktig inmatning");
                     if (Validator.ExitChoice())
                     {
                         return -1;
@@ -195,7 +207,7 @@ namespace Bokningsappen.Logic
 
         internal static void WrongInput(string instruction)
         {
-            Console.WriteLine(instruction + " försök igen eller tryck <TAB> för att gå tillbaka");
+            Console.WriteLine(instruction + ", försök igen eller tryck <TAB> för att gå tillbaka");
         }
 
         internal static bool ExitChoice()

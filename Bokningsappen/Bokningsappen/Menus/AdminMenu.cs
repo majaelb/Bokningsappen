@@ -49,14 +49,14 @@ namespace Bokningsappen.Menus
                         Console.Clear();
                         Helper.ActiveChoice("[B]oka vikarie");
                         InputManager.BookEmployeeForShift();
-                        GUI.PressAnyKey();
+                        //GUI.PressAnyKey();
                         Console.Clear();
                         break;
                     case ConsoleKey.T:
                         Console.Clear();
                         Helper.ActiveChoice("[T]a bort vikarie från pass");
                         InputManager.RemoveEmployeeFromShift();
-                        GUI.PressAnyKey();
+                        //GUI.PressAnyKey();
                         Console.Clear();
                         break;
                     case ConsoleKey.V:

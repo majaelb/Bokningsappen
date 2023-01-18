@@ -10,6 +10,7 @@ namespace Bokningsappen.UserInterface
     {
         internal static void PressAnyKey()
         {
+            Console.WriteLine();
             Console.WriteLine("Tryck på valfri knapp för att gå vidare");
             Console.ReadKey(true);
         }

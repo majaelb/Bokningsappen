@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Bokningsappen.UserInterface;
 
 namespace Bokningsappen.Logic
 {
@@ -79,18 +80,21 @@ namespace Bokningsappen.Logic
                     {
                         validUnitIds.Add(unit.Id);
                     }
-                
-                    Console.Write("Ange följande uppgifter för att boka en anställd på passet:");
-                    Console.WriteLine();                  
-                    //skicka tillbaka - 1 på int och null på string för att komma ur metoden?
-                    var newEmId = Validator.GetValidatedIntList(validUserIds, "Den anställdas Id - nummer: ");
-                    if (newEmId == -1) return;
-                    var newShId = Validator.GetValidatedIntList(validShiftIds, "Skiftets Id-nummer (Fm = 1, Em = 2, Natt = 3): ");
-                    var newUnId = Validator.GetValidatedIntList(validUnitIds, "Avdelningens Id-nummer (Freja 1 = 1, Freja 2 = 2, Freja 3 = 3): ");
-                    var newYear = Validator.GetValidatedIntInRange("År (YYYY): ", 2023, 2023);
-                    var newWeek = Validator.GetValidatedIntInRange("Vecka: ", 1, 52);
-                    var newDay = Validator.GetValidatedIntInRange("Dag (1-7): ", 1, 7);
 
+                    Console.Write("Ange följande uppgifter för att boka en anställd på passet:");
+                    Console.WriteLine();                   
+                    var newEmId = Validator.GetValidatedIntList(validUserIds, "Den anställdas Id - nummer: ");
+                    if (newEmId == -1) return; //Tar användaren ut ur metoden utan att göra klart
+                    var newShId = Validator.GetValidatedIntList(validShiftIds, "Skiftets Id-nummer (Fm = 1, Em = 2, Natt = 3): ");
+                    if (newShId == -1) return;
+                    var newUnId = Validator.GetValidatedIntList(validUnitIds, "Avdelningens Id-nummer (Freja 1 = 1, Freja 2 = 2, Freja 3 = 3): ");
+                    if (newUnId == -1) return;
+                    var newYear = Validator.GetValidatedIntInRange("År (YYYY): ", 2023, 2023);
+                    if (newYear == -1) return;
+                    var newWeek = Validator.GetValidatedIntInRange("Vecka: ", 1, 52);
+                    if (newWeek == -1) return;
+                    var newDay = Validator.GetValidatedIntInRange("Dag (1-7): ", 1, 7);
+                    if (newDay == -1) return;
 
                     var newBooking = new Booking
                     {
@@ -100,9 +104,7 @@ namespace Bokningsappen.Logic
                         Year = newYear,
                         Week = newWeek,
                         Day = newDay
-
                     };
-
 
                     var bookings = database.Bookings.Where(b => newShId == b.ShiftId && newUnId == b.UnitId && newYear == b.Year && newWeek == b.Week && newDay == b.Day);
 
@@ -117,6 +119,7 @@ namespace Bokningsappen.Logic
                         {
                             printInfo = "Bokningen genomförd";
                             database.Add(newBooking);
+                            database.SaveChanges();
                             success = true;
                         }
                         else
@@ -129,25 +132,23 @@ namespace Bokningsappen.Logic
                         printInfo = "Detta skift är redan bokat, vänligen välj ett annat datum";
                     }
 
-                    Console.WriteLine(printInfo);
-                    database.SaveChanges();
-                    Console.ReadKey();
+                    Console.WriteLine(printInfo);            
+                    GUI.PressAnyKey();
                 }
             }
         }
-
-
+        //KLAR
         internal static void RemoveEmployeeFromShift()
-
         {
             using (var db = new MyDbContext())
             {
                 bool success = false;
                 while (!success)
-                {
+                {                   
                     ShowManager.ShowAllBookings();
-                    Console.Write("Ange Id för det pass du vill ta bort bokningen från: ");
-                    int postId = int.Parse(Console.ReadLine());
+                    int postId = Validator.GetValidatedInt("Ange Id för det pass du vill ta bort bokningen från: ");
+                    if (postId == -1) return; //Tar användaren ut ur metoden utan att göra klart
+
                     var deletePost = (from post in db.Bookings
                                       where post.Id == postId
                                       select post).SingleOrDefault();
@@ -157,30 +158,19 @@ namespace Bokningsappen.Logic
                         db.SaveChanges();
                         Console.WriteLine("Passet är nu avbokat");
                         success = true;
+                        GUI.PressAnyKey();
                     }
                     else
                     {
-                        Console.WriteLine("Passet du valde finns inte, vänligen försök igen");
-                        Console.ReadKey();
+                        Validator.WrongInput("Passet du valde finns inte");
+                        if (Validator.ExitChoice()) //Tar användaren ut ur metoden utan att göra klart
+                        {
+                            return;
+                        }
                         Console.Clear();
-                    }
+                    }                   
                 }
             }
         }
-
-        //public static void Login()
-        //{
-        //    bool failedLogin = true;
-        //    while (failedLogin)
-        //    {
-        //        Console.Write("Ange ditt användarnamn: ");
-        //        var username = Console.ReadLine();
-        //        Console.Write("Ange ditt lösenord: ");
-        //        var password = Console.ReadLine();
-
-        //        Helpers.CheckLogIn(failedLogin, username, password);
-        //        //Console.Clear();
-        //    }
-        //}
     }
 }

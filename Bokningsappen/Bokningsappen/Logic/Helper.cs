@@ -40,7 +40,7 @@ namespace Bokningsappen.Logic
                         if (Validator.ExitChoice())
                         {
                             return null;
-                        }                     
+                        }
                     }
                 }
             }
@@ -68,6 +68,14 @@ namespace Bokningsappen.Logic
             Console.WriteLine(choice);
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.WriteLine();
-        }    
+        }
+
+        internal static void ExitInt(int input)
+        {
+            if (input == -1)
+                return;
+          
+
+        }
     }
 }

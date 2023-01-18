@@ -8,22 +8,6 @@ namespace Bokningsappen.Logic
 {
     internal class Enum
     {
-        public enum Month
-        {
-            Januari = 1,
-            Februari,
-            Mars,
-            April,
-            Maj,
-            Juni,
-            Juli,
-            Augusti,
-            September,
-            Oktober,
-            November,
-            December
-        }
-
         public enum Day
         {
             Måndag = 1,
@@ -34,12 +18,5 @@ namespace Bokningsappen.Logic
             Lördag,
             Söndag
         }
-
-        //public enum ShiftName
-        //{
-        //    Förmiddag = 1,
-        //    Eftermiddag,
-        //    Natt
-        //}
     }
 }
