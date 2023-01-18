@@ -200,7 +200,6 @@ namespace Bokningsappen.Logic
 
         internal static bool ExitChoice()
         {
-            Console.WriteLine(" tryck <TAB> för att gå tillbaka");
             var key = Console.ReadKey(true).Key;
             return key == ConsoleKey.Tab;
         }

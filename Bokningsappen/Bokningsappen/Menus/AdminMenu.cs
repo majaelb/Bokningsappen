@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Bokningsappen.Menus;
+using Bokningsappen.UserInterface;
 
 namespace Bokningsappen.Menus
 {
@@ -41,21 +42,21 @@ namespace Bokningsappen.Menus
                         Console.Clear();
                         Helper.ActiveChoice("[L]ägg till ny vikarie");
                         InputManager.AddNewEmployee();
-                        Console.ReadKey();
+                        GUI.PressAnyKey();
                         Console.Clear();
                         break;
                     case ConsoleKey.B:
                         Console.Clear();
                         Helper.ActiveChoice("[B]oka vikarie");
                         InputManager.BookEmployeeForShift();
-                        Console.ReadKey();
+                        GUI.PressAnyKey();
                         Console.Clear();
                         break;
                     case ConsoleKey.T:
                         Console.Clear();
                         Helper.ActiveChoice("[T]a bort vikarie från pass");
                         InputManager.RemoveEmployeeFromShift();
-                        Console.ReadKey();
+                        GUI.PressAnyKey();
                         Console.Clear();
                         break;
                     case ConsoleKey.V:
@@ -68,6 +69,8 @@ namespace Bokningsappen.Menus
                         Console.Clear();
                         Helper.ActiveChoice("A[N]ställdas lön");
                         ShowManager.ShowSalaryForEmployees();
+                        GUI.PressAnyKey();
+                        Console.Clear();
                         break;
                     case ConsoleKey.F:
                         Console.Clear();
@@ -75,7 +78,7 @@ namespace Bokningsappen.Menus
                         ShowManager.ShowMostBookedStaff();
                         Console.WriteLine();
                         ShowManager.ShowMostBookedUnit();
-                        Console.ReadKey();
+                        GUI.PressAnyKey();
                         Console.Clear();
                         break;
                     case ConsoleKey.A:

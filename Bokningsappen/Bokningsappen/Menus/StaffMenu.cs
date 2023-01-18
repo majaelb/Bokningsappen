@@ -1,5 +1,6 @@
 ﻿using Bokningsappen.Logic;
 using Bokningsappen.Models;
+using Bokningsappen.UserInterface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,14 +37,14 @@ namespace Bokningsappen.Menus
                         Console.Clear();
                         Helper.ActiveChoice("[V]isa mina bokade pass");
                         ShowManager.ShowLoggedinUsersBookings(user);
-                        Console.ReadKey();
+                        GUI.PressAnyKey();
                         Console.Clear();
                         break;
                     case ConsoleKey.M:
                         Console.Clear();
                         Helper.ActiveChoice("[M]in lön");
                         ShowManager.ShowLoggedInUsersSalary(user);
-                        Console.ReadKey();
+                        GUI.PressAnyKey();
                         Console.Clear();
                         break;
                     case ConsoleKey.A:

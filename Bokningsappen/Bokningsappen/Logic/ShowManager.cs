@@ -85,6 +85,7 @@ namespace Bokningsappen.Logic
                                  UnitName = un.Name,
                                  UserId = u.Id,
                                  b.Year,
+                                 b.Week,
                                  b.Day
                              };
 
@@ -94,7 +95,7 @@ namespace Bokningsappen.Logic
                 Console.WriteLine();
                 foreach (var u in result.Where(u => u.UserId == user.Id))
                 {
-                    Console.WriteLine(u.ShiftName + "    \t\t" + u.UnitName + "  \t\t" + u.Year + "   \t\t" + System.Enum.GetName(typeof(Enum.Day), u.Day));
+                    Console.WriteLine(u.ShiftName + "    \t\t" + u.UnitName + "  \t\t" + u.Year + "/" + u.Week + "\t\t" + System.Enum.GetName(typeof(Enum.Day), u.Day));
                 }
                 Console.WriteLine("---------------------------------------------------------------");
             }
@@ -137,7 +138,7 @@ namespace Bokningsappen.Logic
                 Console.WriteLine("---------------------------------------------------------------");
             }
         }
-
+        //korta ner och gör metod av vissa delar
         internal static void ShowBookingsPerWeek()
         {
             using (var db = new MyDbContext())
@@ -194,7 +195,7 @@ namespace Bokningsappen.Logic
                             string printInfo = "Obokat pass";
                             foreach (var r in result)
                             {
-                                if (r.Week == selectedWeek && r.Day == day && r.ShiftId == shift + 4 && r.UnitName == selectedUnit)
+                                if (r.Week == selectedWeek && r.Day == day && r.ShiftId == shift && r.UnitName == selectedUnit)
                                 {
                                     printInfo = r.UserName;
                                 }
@@ -253,7 +254,7 @@ namespace Bokningsappen.Logic
                 }
             }
         }
-
+        //Fixa till procent?
         internal static void CountBookingsPerWeek(int selectedWeek, string selectedUnit)
         {
             using (var db = new MyDbContext())

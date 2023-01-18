@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Bokningsappen.Menus;
+using Bokningsappen.UserInterface;
 
 namespace Bokningsappen.Logic
 {
@@ -29,7 +30,7 @@ namespace Bokningsappen.Logic
                     if (loggedInUser != null)
                     {
                         Console.WriteLine("Välkommen " + loggedInUser.FirstName + " " + loggedInUser.LastName + "!");
-                        Console.ReadKey();
+                        GUI.PressAnyKey();
                         failedLogin = false;
                         return loggedInUser;
                     }
