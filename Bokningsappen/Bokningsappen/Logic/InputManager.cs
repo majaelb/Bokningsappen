@@ -65,7 +65,7 @@ namespace Bokningsappen.Logic
                     ShowManager.ShowEmployees();
 
                     List<int> validUserIds = new();
-                    foreach (User user in database.Users)
+                    foreach (User user in database.Users.Where(u => u.Title.Equals("USK")))
                     {
                         validUserIds.Add(user.Id);
                     }
@@ -79,10 +79,9 @@ namespace Bokningsappen.Logic
                     {
                         validUnitIds.Add(unit.Id);
                     }
-
+                
                     Console.Write("Ange följande uppgifter för att boka en anställd på passet:");
-                    Console.WriteLine();
-
+                    Console.WriteLine();                  
                     //skicka tillbaka - 1 på int och null på string för att komma ur metoden?
                     var newEmId = Validator.GetValidatedIntList(validUserIds, "Den anställdas Id - nummer: ");
                     if (newEmId == -1) return;

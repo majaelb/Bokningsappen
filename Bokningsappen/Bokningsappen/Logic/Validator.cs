@@ -108,6 +108,8 @@ namespace Bokningsappen.Logic
             }
         }
 
+        
+
         internal static int GetValidatedIntInRange(string instruction, int lower, int upper)
         {
             while (true)
@@ -145,7 +147,11 @@ namespace Bokningsappen.Logic
                 }
                 else
                 {
-                    Console.WriteLine("Felaktig inmatning, försök igen");
+                    Validator.WrongInput("Fel användarnamn eller lösenord");
+                    if (Validator.ExitChoice())
+                    {
+                        return -1;
+                    }
                 }
             }
         }
@@ -178,7 +184,11 @@ namespace Bokningsappen.Logic
                 }
                 else
                 {
-                    Console.WriteLine("Felaktig inmatning, försök igen");
+                    Validator.WrongInput("Felaktig inmatning, försök igen");
+                    if (Validator.ExitChoice())
+                    {
+                        return -1;
+                    }
                 }
             }
         }
@@ -190,6 +200,7 @@ namespace Bokningsappen.Logic
 
         internal static bool ExitChoice()
         {
+            Console.WriteLine(" tryck <TAB> för att gå tillbaka");
             var key = Console.ReadKey(true).Key;
             return key == ConsoleKey.Tab;
         }
