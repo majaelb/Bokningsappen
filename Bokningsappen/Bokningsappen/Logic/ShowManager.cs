@@ -277,14 +277,7 @@ namespace Bokningsappen.Logic
                         case ConsoleKey.B:
                             selectedUnit = Validator.ValidateUnit();
                             if (selectedUnit == null) return;
-                            break;
-                            //if (book == true)
-                            //{
-                            //       case ConsoleKey.Q:
-                            //     //boka pass
-
-                            //}
-                            //    break;
+                            break;                       
                         case ConsoleKey.T:
                             runProgram = false;
                             break;
@@ -293,7 +286,7 @@ namespace Bokningsappen.Logic
             }
         }
 
-        //Fixa till procent?
+        //KLAR
         internal static void CountBookingsPerWeek(int selectedWeek, string selectedUnit)
         {
             using (var db = new MyDbContext())
@@ -309,13 +302,14 @@ namespace Bokningsappen.Logic
                              };
                 var count = result.Where(x => x.Week == selectedWeek && x.UnitName.Equals(selectedUnit))
                     .Count();
+                double percentBooked = (count * 100) / 21;
                 if (count <= 4)
                 {
-                    Console.WriteLine("Denna vecka är endast " + count + " av 21 pass bokade. Behöver du boka fler vikarier?");
+                    Console.WriteLine("Denna vecka är endast " + percentBooked + "% (" + count + " av 21) pass bokade. Behöver du boka fler vikarier?");
                 }
                 else
                 {
-                    Console.WriteLine("Denna vecka är " + count + " av 21 pass bokade.");
+                    Console.WriteLine("Denna vecka är " + percentBooked + "% (" + count + " av 21) pass bokade.");
                 }
             }
         }

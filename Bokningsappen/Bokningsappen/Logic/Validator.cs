@@ -34,47 +34,44 @@ namespace Bokningsappen.Logic
         //KLAR
         internal static string? GetFixedStringLength(string instruction, int length)
         {
-            string message;
             while (true)
             {
                 string? input = GetValidatedString(instruction);
+                if (input == null) return null;
                 if (input.Length == length)
                 {
                     return input;
                 }
                 else
                 {
-                    Validator.WrongInput(message = "Felaktig inmatning");
+                    Validator.WrongInput("Felaktig inmatning");
                     if (Validator.ExitChoice())
                     {
                         return null;
                     }
                 }
             }
-            Console.WriteLine(message);
         }
         //KLAR
-        internal static string? ValidateTitle()
+        internal static string? ValidateTitle(string instruction)
         {
-            string message;
             while (true)
             {
-                Console.Write("Titel (USK/ADM): ");
-                string title = Console.ReadLine();
+                string? title = GetValidatedString(instruction);
+                if (title == null) return null;
                 if (title == "USK" || title == "ADM")
                 {
                     return title;
                 }
                 else
                 {
-                    Validator.WrongInput(message = "Felaktig inmatning");
+                    Validator.WrongInput("Felaktig inmatning");
                     if (Validator.ExitChoice())
                     {
                         return null;
                     }
                 }
             }
-            Console.WriteLine(message);
         }
         //KLAR
         internal static string? ValidateUnit()
@@ -84,6 +81,7 @@ namespace Bokningsappen.Logic
                 while (true)
                 {
                     string? unitName = GetValidatedString("Vilken avdelning vill du visa? ");
+                    if (unitName == null) return null;
                     var unitNames = db.Units.ToList();
                     foreach (var unit in unitNames)
                     {
@@ -91,17 +89,14 @@ namespace Bokningsappen.Logic
                         {
                             return unitName;
                         }
-                        else
-                        {
-                            WrongInput("Fel namn på avdelning");
-                            if (Validator.ExitChoice())
-                            {
-                                return null;
-                            }
-                            break;
-                        }
-                    }               
-                }              
+                    }
+
+                    WrongInput("Fel namn på avdelning");
+                    if (Validator.ExitChoice())
+                    {
+                        return null;
+                    }
+                }
             }
         }
         //KLAR
@@ -109,22 +104,12 @@ namespace Bokningsappen.Logic
         {
             while (true)
             {
-                Console.Write(instruction);
-                string? input = Console.ReadLine();
-                if (input != null && int.TryParse(input, out int number))
+                int input = GetValidatedInt(instruction);
+                if (input == -1) return -1;
+
+                if (input <= upper && input >= lower)
                 {
-                    if (number <= upper && number >= lower)
-                    {
-                        return number;
-                    }
-                    else
-                    {
-                        Validator.WrongInput("Felaktig inmatning");
-                        if (Validator.ExitChoice())
-                        {
-                            return -1;
-                        }
-                    }
+                    return input;
                 }
                 else
                 {
@@ -134,7 +119,7 @@ namespace Bokningsappen.Logic
                         return -1;
                     }
                 }
-            }
+            }    
         }
         //KLAR
         internal static int GetValidatedInt(string instruction)
@@ -178,12 +163,13 @@ namespace Bokningsappen.Logic
                 }
             }
         }
-        //dubbla utskrifter vid vissa val
+        //KLAR
         internal static int GetValidatedIntList(IEnumerable<int> validationList, string instruction)
         {
             while (true)
             {
                 int input = GetValidatedInt(instruction);
+                if (input == -1) return -1;
                 if (validationList.Contains(input))
                 {
                     return input;
@@ -194,9 +180,9 @@ namespace Bokningsappen.Logic
                     if (Validator.ExitChoice())
                     {
                         return -1;
-                    }                    
+                    }
                 }
-            }          
+            }
         }
         //KLAR
         internal static void WrongInput(string instruction)

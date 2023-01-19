@@ -19,9 +19,9 @@ namespace Bokningsappen.UserInterface
         {
             Console.WriteLine("Välj funktion");
             Console.WriteLine("=====");
-            for (int row = 0; row < list.Count; row++)
+            for (int i = 0; i < list.Count; i++)
             {
-                Console.WriteLine($"[{row + 1}] " + list[row]);
+                Console.WriteLine($"[{i + 1}] " + list[i]);
             }
         }
     }

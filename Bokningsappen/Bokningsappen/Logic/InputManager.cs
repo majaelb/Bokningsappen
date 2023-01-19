@@ -23,7 +23,7 @@ namespace Bokningsappen.Logic
                 ShowManager.ShowEmployees();
                 Console.Write("Ange följande uppgifter om den anställda:");
                 Console.WriteLine();
-                var newTitle = Validator.ValidateTitle();
+                var newTitle = Validator.ValidateTitle("Titel (USK/ADM): ").ToUpper();
                 if (newTitle == null) return;
                 var newBirthDate = Validator.GetFixedStringLength("Födelsedatum (YYYYMMDD-XXXX): ", "YYYYMMDD-XXXX".Length);
                 if (newBirthDate == null) return;
@@ -103,7 +103,7 @@ namespace Bokningsappen.Logic
                 return affectedRow > 0;
             }
         }
-        //KLAR (bortsett från getvalidatedintlist vid vissa inmatningar)
+        //KLAR
         internal static void BookEmployeeForShift()
         {
             bool success = false;
@@ -113,7 +113,6 @@ namespace Bokningsappen.Logic
                 {
                     Console.Clear();
                     ShowManager.ShowEmployees();
-                    //Visa alla bokningar?
 
                     List<int> validUserIds = new();
                     foreach (User user in database.Users.Where(u => u.Title.Equals("USK")))
