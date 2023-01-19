@@ -29,6 +29,34 @@ namespace Bokningsappen.Logic
                 Console.WriteLine("--------------------------------------------------------------------------");
             }
         }
+        internal static void ShowAllInfoEmployees(int id)
+        {
+            using (var database = new MyDbContext())
+            {
+                var userList = database.Users.ToList();
+                Console.WriteLine("--------------------------------------------------------------------------");
+                Console.WriteLine();
+                foreach (var post in userList.Where(u => u.Id == id))
+                {
+                    Console.WriteLine(
+                        $"Id: {post.Id} " + Environment.NewLine +
+                        $"Title: {post.Title}" + Environment.NewLine +
+                        $"BirthDate: {post.BirthDate}" + Environment.NewLine +
+                        $"FirstName: {post.FirstName}" + Environment.NewLine +
+                        $"LastName: {post.LastName}" + Environment.NewLine +
+                        $"Address: {post.Address}" + Environment.NewLine +
+                        $"PostalCode: {post.PostalCode}" + Environment.NewLine +
+                        $"City: {post.City}" + Environment.NewLine +
+                        $"Country: {post.Country}" + Environment.NewLine +
+                        $"PhoneNumber: {post.PhoneNumber}" + Environment.NewLine +
+                        $"Email: {post.Email}" + Environment.NewLine +
+                        $"SalaryPerHour: {post.SalaryPerHour}" + Environment.NewLine +
+                        $"UserName: {post.UserName}" + Environment.NewLine +
+                        $"PassWord: {post.PassWord}");
+                }
+                Console.WriteLine("--------------------------------------------------------------------------");
+            }
+        }
 
         internal static void ShowUnits()
         {
@@ -140,7 +168,7 @@ namespace Bokningsappen.Logic
             }
         }
         //korta ner och gör metod av vissa delar
-        internal static void ShowBookingsPerWeek()
+        internal static void ShowBookingsPerWeek(/*bool book*/)
         {
             using (var db = new MyDbContext())
             {
@@ -156,8 +184,8 @@ namespace Bokningsappen.Logic
                 bool runProgram = true;
                 while (runProgram)
                 {
-                    Console.Clear();
 
+                    Console.Clear();
                     var result = from
                                      b in db.Bookings
                                  join
@@ -250,14 +278,21 @@ namespace Bokningsappen.Logic
                             selectedUnit = Validator.ValidateUnit();
                             if (selectedUnit == null) return;
                             break;
+                            //if (book == true)
+                            //{
+                            //       case ConsoleKey.Q:
+                            //     //boka pass
+
+                            //}
+                            //    break;
                         case ConsoleKey.T:
                             runProgram = false;
                             break;
-                    }                                     
+                    }
                 }
             }
         }
-      
+
         //Fixa till procent?
         internal static void CountBookingsPerWeek(int selectedWeek, string selectedUnit)
         {

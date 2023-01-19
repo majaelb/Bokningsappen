@@ -76,12 +76,11 @@ namespace Bokningsappen.Logic
             }
             Console.WriteLine(message);
         }
-
+        //KLAR
         internal static string? ValidateUnit()
         {
             using (var db = new MyDbContext())
             {
-                string message;
                 while (true)
                 {
                     string? unitName = GetValidatedString("Vilken avdelning vill du visa? ");
@@ -94,15 +93,15 @@ namespace Bokningsappen.Logic
                         }
                         else
                         {
-                            Validator.WrongInput(message = "Fel namn på avdelning, försök igen! ");
+                            WrongInput("Fel namn på avdelning");
                             if (Validator.ExitChoice())
                             {
                                 return null;
                             }
+                            break;
                         }
-                    }
-                }
-                Console.WriteLine(message);
+                    }               
+                }              
             }
         }
         //KLAR
@@ -191,13 +190,13 @@ namespace Bokningsappen.Logic
                 }
                 else
                 {
-                    Validator.WrongInput("Felaktig inmatning apa");
+                    Validator.WrongInput("Felaktig inmatning");
                     if (Validator.ExitChoice())
                     {
                         return -1;
-                    }
+                    }                    
                 }
-            }
+            }          
         }
         //KLAR
         internal static void WrongInput(string instruction)

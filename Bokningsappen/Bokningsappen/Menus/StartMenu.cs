@@ -1,5 +1,6 @@
 ﻿using Bokningsappen.Logic;
 using Bokningsappen.Models;
+using Bokningsappen.UserInterface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +14,11 @@ namespace Bokningsappen.Menus
         public static void Option()
         {
             Console.Clear();
-            Console.WriteLine("Välkommen till Omsorgsbolaget. Välj alternativ nedan");
-            Console.WriteLine("----------------------------------------------------");
-            Console.WriteLine("[1]Logga in");
-            Console.WriteLine("[2]Avsluta");
+            Console.WriteLine("Välkommen till Omsorgsbolaget");
+            Console.WriteLine("-----------------------------");
+            List<string> menuOptions = new List<string> { "Logga in", "Avsluta" };
+            GUI.PrintList(menuOptions);
+           
         }
 
         public static void Run()

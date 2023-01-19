@@ -14,5 +14,15 @@ namespace Bokningsappen.UserInterface
             Console.WriteLine("Tryck på valfri knapp för att gå vidare");
             Console.ReadKey(true);
         }
+
+        internal static void PrintList(List<string> list)
+        {
+            Console.WriteLine("Välj funktion");
+            Console.WriteLine("=====");
+            for (int row = 0; row < list.Count; row++)
+            {
+                Console.WriteLine($"[{row + 1}] " + list[row]);
+            }
+        }
     }
 }

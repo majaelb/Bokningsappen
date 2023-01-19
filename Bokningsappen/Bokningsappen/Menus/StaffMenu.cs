@@ -11,15 +11,12 @@ namespace Bokningsappen.Menus
 {
     internal class StaffMenu
     {
-        public static void Option(User user)
+        public static void PrintOptions(User user)
         {
             Console.WriteLine("Du är inloggad som: " + user.FirstName + " " + user.LastName + ", " + user.Title);
             Console.WriteLine("-------------------------------------------------");
-            Console.WriteLine("Välj funktion");
-            Console.WriteLine("====");
-            Console.WriteLine("[1]Mina bokade pass");
-            Console.WriteLine("[2]Min lön");
-            Console.WriteLine("[3]Avsluta/Logga ut");
+            List<string> menuOptions = new List<string> {"Mina bokade pass", "Min lön" , "Avsluta/Logga ut" };
+            GUI.PrintList(menuOptions);
         }
 
         public static void Run(User user)
@@ -28,7 +25,7 @@ namespace Bokningsappen.Menus
             while (runProgram)
 
             {
-                Option(user);
+                PrintOptions(user);
                 var key = Console.ReadKey(true).Key;
 
                 switch (key)

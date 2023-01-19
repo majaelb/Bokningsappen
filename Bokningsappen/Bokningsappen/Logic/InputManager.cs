@@ -6,11 +6,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Bokningsappen.UserInterface;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Dapper;
 
 namespace Bokningsappen.Logic
 {
     internal class InputManager
     {
+        static readonly string connString = "Server=tcp:dbdemomaja.database.windows.net,1433;Initial Catalog=Bokningsappen;Persist Security Info=False;User ID=majasadmin;Password=onXPkQbvhHCh8Ap;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
         //KLAR (kan man göra metod av return-kollen?)
         internal static void AddNewEmployee()
         {
@@ -68,6 +72,37 @@ namespace Bokningsappen.Logic
                 Console.WriteLine(newFirstName + " " + newLastName + " är nu tillagd!");
             }
         }
+        internal static bool ChangeEmployeeInfo()
+        {
+            while (true)
+            {
+                List<int> validUserIds = new();
+                using (var db = new MyDbContext())
+                {
+                    foreach (User user in db.Users.Where(u => u.Title.Equals("USK")))
+                    {
+                        validUserIds.Add(user.Id);
+                    }
+                }
+                ShowManager.ShowEmployees();
+                var id = Validator.GetValidatedIntList(validUserIds, "Ange Id på den person du vill ändra: ");
+                if (id == -1) return true;
+                ShowManager.ShowAllInfoEmployees(id);
+                string? column = Validator.GetValidatedString("Vilken kolumn vill du ändra på? ");
+                if (column == null) return true;
+                string? newValue = Validator.GetValidatedString("Ange det nya värdet: ");
+                if (newValue == null) return true;
+
+                int affectedRow = 0;
+                string sql = $"UPDATE [Users] SET [{column}] = '{newValue}' WHERE Id = {id}";
+
+                using (var connection = new SqlConnection(connString))
+                {
+                    affectedRow = connection.Execute(sql);
+                }
+                return affectedRow > 0;
+            }
+        }
         //KLAR (bortsett från getvalidatedintlist vid vissa inmatningar)
         internal static void BookEmployeeForShift()
         {
@@ -78,6 +113,7 @@ namespace Bokningsappen.Logic
                 {
                     Console.Clear();
                     ShowManager.ShowEmployees();
+                    //Visa alla bokningar?
 
                     List<int> validUserIds = new();
                     foreach (User user in database.Users.Where(u => u.Title.Equals("USK")))
@@ -170,7 +206,7 @@ namespace Bokningsappen.Logic
                         db.Bookings.Remove(deletePost);
                         db.SaveChanges();
                         Console.WriteLine("Passet är nu avbokat");
-                        success = true;                       
+                        success = true;
                     }
                     else
                     {

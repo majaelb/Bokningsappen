@@ -1,4 +1,5 @@
 ﻿
+using Bokningsappen.Logic;
 using Bokningsappen.Menus;
 
 namespace Bokningsappen
@@ -12,6 +13,7 @@ namespace Bokningsappen
             //ShowData.ShowLoggedInUsersSalary(user);
             //ShowData.ShowShifts();
             StartMenu.Run();
+            //ShowManager.ShowAllInfoEmployees();
             //Menus.ShowLoggedinUsersMenu(user);
             //InsertData.Login();
             //InsertData.AddNewEmployee();
