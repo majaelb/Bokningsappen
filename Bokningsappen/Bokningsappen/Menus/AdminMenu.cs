@@ -18,13 +18,13 @@ namespace Bokningsappen.Menus
             Console.WriteLine("--------------------------------------------");
             Console.WriteLine("Välj funktion");
             Console.WriteLine("====");
-            Console.WriteLine("[L]ägg till ny vikarie");
-            Console.WriteLine("[B]oka vikarie på pass");
-            Console.WriteLine("[T]a bort vikarie från pass");
-            Console.WriteLine("[V]isa alla pass");
-            Console.WriteLine("A[N]ställdas lön");
-            Console.WriteLine("[F]lest bokningar");
-            Console.WriteLine("[A]vsluta/Logga ut");
+            Console.WriteLine("[1]Lägg till ny vikarie");
+            Console.WriteLine("[2]Boka vikarie på pass");
+            Console.WriteLine("[3]Avboka vikarie från pass");
+            Console.WriteLine("[4]Visa alla pass");
+            Console.WriteLine("[5]Anställdas lön");
+            Console.WriteLine("[6]Flest bokningar");
+            Console.WriteLine("[7]Avsluta/Logga ut");
         }
 
         public static void Run(User user)
@@ -38,50 +38,57 @@ namespace Bokningsappen.Menus
 
                 switch (key)
                 {
-                    case ConsoleKey.L:
+                    case ConsoleKey.D1: 
+                    case ConsoleKey.NumPad1:
                         Console.Clear();
-                        Helper.ActiveChoice("[L]ägg till ny vikarie");
+                        Helper.ActiveChoice("Lägg till ny vikarie");
                         InputManager.AddNewEmployee();
                         GUI.PressAnyKey();
                         Console.Clear();
                         break;
-                    case ConsoleKey.B:
+                    case ConsoleKey.D2:
+                    case ConsoleKey.NumPad2:
                         Console.Clear();
-                        Helper.ActiveChoice("[B]oka vikarie");
+                        Helper.ActiveChoice("Boka vikarie på pass");
                         InputManager.BookEmployeeForShift();
                         //GUI.PressAnyKey();
                         Console.Clear();
                         break;
-                    case ConsoleKey.T:
+                    case ConsoleKey.D3:
+                    case ConsoleKey.NumPad3:
                         Console.Clear();
-                        Helper.ActiveChoice("[T]a bort vikarie från pass");
+                        Helper.ActiveChoice("Avboka vikarie från pass");
                         InputManager.RemoveEmployeeFromShift();
                         //GUI.PressAnyKey();
                         Console.Clear();
                         break;
-                    case ConsoleKey.V:
+                    case ConsoleKey.D4:
+                    case ConsoleKey.NumPad4:
                         Console.Clear();
-                        Helper.ActiveChoice("[V]isa pass per vecka");
+                        Helper.ActiveChoice("Visa pass per vecka");
                         ShowManager.ShowBookingsPerWeek();
                         Console.Clear();
                         break;
-                    case ConsoleKey.N:
+                    case ConsoleKey.D5:
+                    case ConsoleKey.NumPad5:
                         Console.Clear();
-                        Helper.ActiveChoice("A[N]ställdas lön");
+                        Helper.ActiveChoice("Anställdas lön");
                         ShowManager.ShowSalaryForEmployees();
                         GUI.PressAnyKey();
                         Console.Clear();
                         break;
-                    case ConsoleKey.F:
+                    case ConsoleKey.D6:
+                    case ConsoleKey.NumPad6:
                         Console.Clear();
-                        Helper.ActiveChoice("[F]lest bokningar");
+                        Helper.ActiveChoice("Flest bokningar");
                         ShowManager.ShowMostBookedStaff();
                         Console.WriteLine();
                         ShowManager.ShowMostBookedUnit();
                         GUI.PressAnyKey();
                         Console.Clear();
                         break;
-                    case ConsoleKey.A:
+                    case ConsoleKey.D7:
+                    case ConsoleKey.NumPad7:
                         runProgram = false;
                         break;
                 }

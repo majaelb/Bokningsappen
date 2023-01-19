@@ -9,7 +9,8 @@ namespace Bokningsappen.Logic
 {
     internal class Validator
     {
-        internal static string GetValidatedString(string instruction)
+        //KLAR
+        internal static string? GetValidatedString(string instruction)
         {
             while (true)
             {
@@ -21,65 +22,57 @@ namespace Bokningsappen.Logic
                 }
                 else
                 {
-                    Console.WriteLine("Felaktig inmatning, försök igen!");
+                    Validator.WrongInput("Felaktig inmatning");
+                    if (Validator.ExitChoice())
+                    {
+                        return null;
+                    }
                 }
             }
         }
-
-        internal static string GetFixedStringLength(string instruction, int length)
+        //KLAR
+        internal static string? GetFixedStringLength(string instruction, int length)
         {
+            string message;
             while (true)
             {
                 string? input = GetValidatedString(instruction);
-                string message;
                 if (input.Length == length)
                 {
                     return input;
                 }
                 else
                 {
-                    message = "Felaktig inmatning, försök igen! ";
+                    Validator.WrongInput(message = "Felaktig inmatning");
+                    if (Validator.ExitChoice())
+                    {
+                        return null;
+                    }
                 }
-
-                Console.WriteLine(message);
             }
+            Console.WriteLine(message);
         }
-        //internal static string GetValidatedStringLength(string length, string instruction)
-        //{
-        //    while (true)
-        //    {
-        //        string? input = GetValidatedString(instruction);
-        //        string message;
-        //        if (input.Length == length.Length)
-        //        {
-        //            return input;
-        //        }
-        //        else
-        //        {
-        //            message = "Felaktig inmatning, försök igen! ";
-        //        }
-
-        //        Console.WriteLine(message);
-        //    }
-        //}
-
-        internal static string ValidateTitle()
+        //KLAR
+        internal static string? ValidateTitle()
         {
+            string message;
             while (true)
             {
-                string title = GetValidatedString("Titel(USK/ADM) : ");
-                string message;
+                string title = GetValidatedString("Titel (USK/ADM): ");
                 if (title == "USK" || title == "ADM")
                 {
                     return title;
                 }
                 else
                 {
-                    message = "Ogiltig titel, försök igen! ";
+                    Validator.WrongInput(message = "Felaktig inmatning");
+                    if (Validator.ExitChoice())
+                    {
+                        return null;
+                    }
                 }
-
-                Console.WriteLine(message);
             }
+            Console.WriteLine(message);
         }
 
         internal static string ValidateUnit()
@@ -88,7 +81,6 @@ namespace Bokningsappen.Logic
             {
                 while (true)
                 {
-
                     string unitName = GetValidatedString("Vilken avdelning vill du visa? ");
                     var unitNames = db.Units.ToList();
                     string message = "";
@@ -108,8 +100,6 @@ namespace Bokningsappen.Logic
             }
         }
 
-        
-
         internal static int GetValidatedIntInRange(string instruction, int lower, int upper)
         {
             while (true)
@@ -121,7 +111,6 @@ namespace Bokningsappen.Logic
                     if (number <= upper && number >= lower)
                     {
                         return number;
-
                     }
                     else
                     {
@@ -159,7 +148,7 @@ namespace Bokningsappen.Logic
                     if (Validator.ExitChoice())
                     {
                         return -1;
-                    }                   
+                    }
                 }
             }
         }

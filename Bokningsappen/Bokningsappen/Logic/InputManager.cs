@@ -15,43 +15,61 @@ namespace Bokningsappen.Logic
         {
             using (var database = new MyDbContext())
             {
-                ShowManager.ShowEmployees();
-                Console.Write("Ange följande uppgifter om den anställda:");
-                Console.WriteLine();
-                var newTitle = Validator.ValidateTitle();
-                var newBirthDate = Validator.GetFixedStringLength("Födelsedatum (YYYYMMDD-XXXX): ", "YYYYMMDD-XXXX".Length);
-                var newFirstName = Validator.GetValidatedString("Förnamn: ");
-                var newLastName = Validator.GetValidatedString("Efternamn: ");
-                var newAddress = Validator.GetValidatedString("Gatuadress och gatunummer: ");
-                var newPostalCode = Validator.GetValidatedIntInRange("Postnummer: ", 10000, 99999);
-                var newCity = Validator.GetValidatedString("Stad: ");
-                var newCountry = Validator.GetValidatedString("Land: ");
-                var newPhoneNumber = Validator.GetFixedStringLength("Telefonnummer: (070-1234567): ", "123-1234567".Length);
-                var newEmail = Validator.GetValidatedString("Mailadress: ");
-                var newSalary = Validator.GetValidatedDouble("Timlön (kr): ");
-                var newUserName = Validator.GetFixedStringLength("Användarnamn (3 första bokstäverna i förnamnet och efternamnet): ".ToLower(), "aaabbb".Length);
-                var newPassWord = Validator.GetValidatedString("Lösenord: ");
-
-                var newUser = new User
+                bool success = false;
+                while (!success)
                 {
-                    Title = newTitle,
-                    BirthDate = newBirthDate,
-                    FirstName = newFirstName,
-                    LastName = newLastName,
-                    Address = newAddress,
-                    PostalCode = newPostalCode,
-                    City = newCity,
-                    Country = newCountry,
-                    PhoneNumber = newPhoneNumber,
-                    Email = newEmail,
-                    SalaryPerHour = newSalary,
-                    UserName = newUserName,
-                    PassWord = newPassWord
-                };
+                    ShowManager.ShowEmployees();
+                    Console.Write("Ange följande uppgifter om den anställda:");
+                    Console.WriteLine();
+                    var newTitle = Validator.ValidateTitle();
+                    if (newTitle == null) return;
+                    var newBirthDate = Validator.GetFixedStringLength("Födelsedatum (YYYYMMDD-XXXX): ", "YYYYMMDD-XXXX".Length);
+                    if (newBirthDate == null) return;
+                    var newFirstName = Validator.GetValidatedString("Förnamn: ");
+                    if (newFirstName == null) return;
+                    var newLastName = Validator.GetValidatedString("Efternamn: ");
+                    if (newLastName == null) return;
+                    var newAddress = Validator.GetValidatedString("Gatuadress och gatunummer: ");
+                    if (newAddress == null) return;
+                    var newPostalCode = Validator.GetValidatedIntInRange("Postnummer: ", 10000, 99999);
 
-                database.Add(newUser);
-                database.SaveChanges();
-                Console.WriteLine(newFirstName + " " + newLastName + " är nu tillagd!");
+                    var newCity = Validator.GetValidatedString("Stad: ");
+                    if (newCity == null) return;
+                    var newCountry = Validator.GetValidatedString("Land: ");
+                    if (newCountry == null) return;
+                    var newPhoneNumber = Validator.GetFixedStringLength("Telefonnummer: (070-1234567): ", "123-1234567".Length);
+                    if (newPhoneNumber == null) return;
+                    var newEmail = Validator.GetValidatedString("Mailadress: ");
+                    if (newEmail == null) return;
+                    var newSalary = Validator.GetValidatedDouble("Timlön (kr): ");
+
+                    var newUserName = Validator.GetFixedStringLength("Användarnamn (3 första bokstäverna i förnamnet och efternamnet): ".ToLower(), "aaabbb".Length);
+                    if (newUserName == null) return;
+                    var newPassWord = Validator.GetValidatedString("Lösenord: ");
+                    if (newPassWord == null) return;
+
+                    var newUser = new User
+                    {
+                        Title = newTitle,
+                        BirthDate = newBirthDate,
+                        FirstName = newFirstName,
+                        LastName = newLastName,
+                        Address = newAddress,
+                        PostalCode = newPostalCode,
+                        City = newCity,
+                        Country = newCountry,
+                        PhoneNumber = newPhoneNumber,
+                        Email = newEmail,
+                        SalaryPerHour = newSalary,
+                        UserName = newUserName,
+                        PassWord = newPassWord
+                    };
+
+                    database.Add(newUser);
+                    database.SaveChanges();
+                    Console.WriteLine(newFirstName + " " + newLastName + " är nu tillagd!");
+                    success = true;
+                }
             }
         }
 
