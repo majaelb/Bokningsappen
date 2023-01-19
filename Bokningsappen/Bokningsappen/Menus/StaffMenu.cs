@@ -17,9 +17,9 @@ namespace Bokningsappen.Menus
             Console.WriteLine("-------------------------------------------------");
             Console.WriteLine("Välj funktion");
             Console.WriteLine("====");
-            Console.WriteLine("[V]isa mina bokade pass");
-            Console.WriteLine("[M]in lön");
-            Console.WriteLine("[A]vsluta/Logga ut");
+            Console.WriteLine("[1]Mina bokade pass");
+            Console.WriteLine("[2]Min lön");
+            Console.WriteLine("[3]Avsluta/Logga ut");
         }
 
         public static void Run(User user)
@@ -33,21 +33,24 @@ namespace Bokningsappen.Menus
 
                 switch (key)
                 {
-                    case ConsoleKey.V:
+                    case ConsoleKey.D1:
+                    case ConsoleKey.NumPad1:
                         Console.Clear();
-                        Helper.ActiveChoice("[V]isa mina bokade pass");
+                        Helper.ActiveChoice("Mina bokade pass");
                         ShowManager.ShowLoggedinUsersBookings(user);
                         GUI.PressAnyKey();
                         Console.Clear();
                         break;
-                    case ConsoleKey.M:
+                    case ConsoleKey.D2:
+                    case ConsoleKey.NumPad2:
                         Console.Clear();
-                        Helper.ActiveChoice("[M]in lön");
+                        Helper.ActiveChoice("Min lön");
                         ShowManager.ShowLoggedInUsersSalary(user);
                         GUI.PressAnyKey();
                         Console.Clear();
                         break;
-                    case ConsoleKey.A:
+                    case ConsoleKey.D3:
+                    case ConsoleKey.NumPad3:
                         runProgram = false;
                         break;
                 }

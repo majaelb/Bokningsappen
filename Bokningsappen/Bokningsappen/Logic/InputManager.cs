@@ -11,68 +11,64 @@ namespace Bokningsappen.Logic
 {
     internal class InputManager
     {
+        //KLAR (kan man göra metod av return-kollen?)
         internal static void AddNewEmployee()
         {
             using (var database = new MyDbContext())
             {
-                bool success = false;
-                while (!success)
+                ShowManager.ShowEmployees();
+                Console.Write("Ange följande uppgifter om den anställda:");
+                Console.WriteLine();
+                var newTitle = Validator.ValidateTitle();
+                if (newTitle == null) return;
+                var newBirthDate = Validator.GetFixedStringLength("Födelsedatum (YYYYMMDD-XXXX): ", "YYYYMMDD-XXXX".Length);
+                if (newBirthDate == null) return;
+                var newFirstName = Validator.GetValidatedString("Förnamn: ");
+                if (newFirstName == null) return;
+                var newLastName = Validator.GetValidatedString("Efternamn: ");
+                if (newLastName == null) return;
+                var newAddress = Validator.GetValidatedString("Gatuadress och gatunummer: ");
+                if (newAddress == null) return;
+                var newPostalCode = Validator.GetValidatedIntInRange("Postnummer: ", 10000, 99999);
+                if (newPostalCode == -1) return;
+                var newCity = Validator.GetValidatedString("Stad: ");
+                if (newCity == null) return;
+                var newCountry = Validator.GetValidatedString("Land: ");
+                if (newCountry == null) return;
+                var newPhoneNumber = Validator.GetFixedStringLength("Telefonnummer: (070-1234567): ", "123-1234567".Length);
+                if (newPhoneNumber == null) return;
+                var newEmail = Validator.GetValidatedString("Mailadress: ");
+                if (newEmail == null) return;
+                var newSalary = Validator.GetValidatedDouble("Timlön (kr): ");
+                if (newSalary == -1) return;
+                var newUserName = Validator.GetFixedStringLength("Användarnamn (3 första bokstäverna i förnamnet och efternamnet): ".ToLower(), "aaabbb".Length);
+                if (newUserName == null) return;
+                var newPassWord = Validator.GetValidatedString("Lösenord: ");
+                if (newPassWord == null) return;
+
+                var newUser = new User
                 {
-                    ShowManager.ShowEmployees();
-                    Console.Write("Ange följande uppgifter om den anställda:");
-                    Console.WriteLine();
-                    var newTitle = Validator.ValidateTitle();
-                    if (newTitle == null) return;
-                    var newBirthDate = Validator.GetFixedStringLength("Födelsedatum (YYYYMMDD-XXXX): ", "YYYYMMDD-XXXX".Length);
-                    if (newBirthDate == null) return;
-                    var newFirstName = Validator.GetValidatedString("Förnamn: ");
-                    if (newFirstName == null) return;
-                    var newLastName = Validator.GetValidatedString("Efternamn: ");
-                    if (newLastName == null) return;
-                    var newAddress = Validator.GetValidatedString("Gatuadress och gatunummer: ");
-                    if (newAddress == null) return;
-                    var newPostalCode = Validator.GetValidatedIntInRange("Postnummer: ", 10000, 99999);
+                    Title = newTitle,
+                    BirthDate = newBirthDate,
+                    FirstName = newFirstName,
+                    LastName = newLastName,
+                    Address = newAddress,
+                    PostalCode = newPostalCode,
+                    City = newCity,
+                    Country = newCountry,
+                    PhoneNumber = newPhoneNumber,
+                    Email = newEmail,
+                    SalaryPerHour = newSalary,
+                    UserName = newUserName,
+                    PassWord = newPassWord
+                };
 
-                    var newCity = Validator.GetValidatedString("Stad: ");
-                    if (newCity == null) return;
-                    var newCountry = Validator.GetValidatedString("Land: ");
-                    if (newCountry == null) return;
-                    var newPhoneNumber = Validator.GetFixedStringLength("Telefonnummer: (070-1234567): ", "123-1234567".Length);
-                    if (newPhoneNumber == null) return;
-                    var newEmail = Validator.GetValidatedString("Mailadress: ");
-                    if (newEmail == null) return;
-                    var newSalary = Validator.GetValidatedDouble("Timlön (kr): ");
-
-                    var newUserName = Validator.GetFixedStringLength("Användarnamn (3 första bokstäverna i förnamnet och efternamnet): ".ToLower(), "aaabbb".Length);
-                    if (newUserName == null) return;
-                    var newPassWord = Validator.GetValidatedString("Lösenord: ");
-                    if (newPassWord == null) return;
-
-                    var newUser = new User
-                    {
-                        Title = newTitle,
-                        BirthDate = newBirthDate,
-                        FirstName = newFirstName,
-                        LastName = newLastName,
-                        Address = newAddress,
-                        PostalCode = newPostalCode,
-                        City = newCity,
-                        Country = newCountry,
-                        PhoneNumber = newPhoneNumber,
-                        Email = newEmail,
-                        SalaryPerHour = newSalary,
-                        UserName = newUserName,
-                        PassWord = newPassWord
-                    };
-
-                    database.Add(newUser);
-                    database.SaveChanges();
-                    Console.WriteLine(newFirstName + " " + newLastName + " är nu tillagd!");
-                    success = true;
-                }
+                database.Add(newUser);
+                database.SaveChanges();
+                Console.WriteLine(newFirstName + " " + newLastName + " är nu tillagd!");
             }
         }
-
+        //KLAR (bortsett från getvalidatedintlist vid vissa inmatningar)
         internal static void BookEmployeeForShift()
         {
             bool success = false;
@@ -100,7 +96,7 @@ namespace Bokningsappen.Logic
                     }
 
                     Console.Write("Ange följande uppgifter för att boka en anställd på passet:");
-                    Console.WriteLine();                   
+                    Console.WriteLine();
                     var newEmId = Validator.GetValidatedIntList(validUserIds, "Den anställdas Id - nummer: ");
                     if (newEmId == -1) return; //Tar användaren ut ur metoden utan att göra klart
                     var newShId = Validator.GetValidatedIntList(validShiftIds, "Skiftets Id-nummer (Fm = 1, Em = 2, Natt = 3): ");
@@ -150,8 +146,7 @@ namespace Bokningsappen.Logic
                         printInfo = "Detta skift är redan bokat, vänligen välj ett annat datum";
                     }
 
-                    Console.WriteLine(printInfo);            
-                    GUI.PressAnyKey();
+                    Console.WriteLine(printInfo);
                 }
             }
         }
@@ -162,7 +157,7 @@ namespace Bokningsappen.Logic
             {
                 bool success = false;
                 while (!success)
-                {                   
+                {
                     ShowManager.ShowAllBookings();
                     int postId = Validator.GetValidatedInt("Ange Id för det pass du vill ta bort bokningen från: ");
                     if (postId == -1) return; //Tar användaren ut ur metoden utan att göra klart
@@ -175,8 +170,7 @@ namespace Bokningsappen.Logic
                         db.Bookings.Remove(deletePost);
                         db.SaveChanges();
                         Console.WriteLine("Passet är nu avbokat");
-                        success = true;
-                        GUI.PressAnyKey();
+                        success = true;                       
                     }
                     else
                     {
@@ -186,7 +180,7 @@ namespace Bokningsappen.Logic
                             return;
                         }
                         Console.Clear();
-                    }                   
+                    }
                 }
             }
         }

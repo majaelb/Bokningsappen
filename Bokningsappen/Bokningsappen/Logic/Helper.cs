@@ -69,13 +69,5 @@ namespace Bokningsappen.Logic
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.WriteLine();
         }
-
-        internal static void ExitInt(int input)
-        {
-            if (input == -1)
-                return;
-          
-
-        }
     }
 }

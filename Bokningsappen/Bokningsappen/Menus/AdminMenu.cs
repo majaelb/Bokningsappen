@@ -51,7 +51,7 @@ namespace Bokningsappen.Menus
                         Console.Clear();
                         Helper.ActiveChoice("Boka vikarie på pass");
                         InputManager.BookEmployeeForShift();
-                        //GUI.PressAnyKey();
+                        GUI.PressAnyKey();
                         Console.Clear();
                         break;
                     case ConsoleKey.D3:
@@ -59,7 +59,7 @@ namespace Bokningsappen.Menus
                         Console.Clear();
                         Helper.ActiveChoice("Avboka vikarie från pass");
                         InputManager.RemoveEmployeeFromShift();
-                        //GUI.PressAnyKey();
+                        GUI.PressAnyKey();
                         Console.Clear();
                         break;
                     case ConsoleKey.D4:

@@ -15,8 +15,8 @@ namespace Bokningsappen.Menus
             Console.Clear();
             Console.WriteLine("Välkommen till Omsorgsbolaget. Välj alternativ nedan");
             Console.WriteLine("----------------------------------------------------");
-            Console.WriteLine("[L]ogga in");
-            Console.WriteLine("[A]vsluta");
+            Console.WriteLine("[1]Logga in");
+            Console.WriteLine("[2]Avsluta");
         }
 
         public static void Run()
@@ -29,16 +29,18 @@ namespace Bokningsappen.Menus
 
                 switch (key)
                 {
-                    case ConsoleKey.L:
+                    case ConsoleKey.D1:
+                    case ConsoleKey.NumPad1:
                         Console.Clear();
-                        Helper.ActiveChoice("[L]ogga in");
+                        Helper.ActiveChoice("Logga in");
                         User user = Helper.Login();
                         if (user != null)
                         {
                             Helper.ShowUserMenu(user);
                         }
                         break;
-                    case ConsoleKey.A:
+                    case ConsoleKey.D2:
+                    case ConsoleKey.NumPad2:
                         runProgram = false;
                         break;
                 }

@@ -1,4 +1,5 @@
 ﻿using Bokningsappen.Models;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace Bokningsappen.Logic
             {
                 Console.Write(instruction);
                 string? input = Console.ReadLine();
-                if (input.Length > 0)
+                if (input.Length > 0 || input != null)
                 {
                     return input;
                 }
@@ -58,7 +59,8 @@ namespace Bokningsappen.Logic
             string message;
             while (true)
             {
-                string title = GetValidatedString("Titel (USK/ADM): ");
+                Console.Write("Titel (USK/ADM): ");
+                string title = Console.ReadLine();
                 if (title == "USK" || title == "ADM")
                 {
                     return title;
@@ -75,15 +77,15 @@ namespace Bokningsappen.Logic
             Console.WriteLine(message);
         }
 
-        internal static string ValidateUnit()
+        internal static string? ValidateUnit()
         {
             using (var db = new MyDbContext())
             {
+                string message;
                 while (true)
                 {
-                    string unitName = GetValidatedString("Vilken avdelning vill du visa? ");
+                    string? unitName = GetValidatedString("Vilken avdelning vill du visa? ");
                     var unitNames = db.Units.ToList();
-                    string message = "";
                     foreach (var unit in unitNames)
                     {
                         if (unit.Name == unitName)
@@ -92,14 +94,18 @@ namespace Bokningsappen.Logic
                         }
                         else
                         {
-                            message = "Fel namn på avdelning, försök igen! ";
+                            Validator.WrongInput(message = "Fel namn på avdelning, försök igen! ");
+                            if (Validator.ExitChoice())
+                            {
+                                return null;
+                            }
                         }
                     }
-                    Console.WriteLine(message);
                 }
+                Console.WriteLine(message);
             }
         }
-
+        //KLAR
         internal static int GetValidatedIntInRange(string instruction, int lower, int upper)
         {
             while (true)
@@ -131,7 +137,7 @@ namespace Bokningsappen.Logic
                 }
             }
         }
-
+        //KLAR
         internal static int GetValidatedInt(string instruction)
         {
             while (true)
@@ -152,7 +158,7 @@ namespace Bokningsappen.Logic
                 }
             }
         }
-
+        //KLAR
         internal static double GetValidatedDouble(string instruction)
         {
             while (true)
@@ -173,7 +179,7 @@ namespace Bokningsappen.Logic
                 }
             }
         }
-
+        //dubbla utskrifter vid vissa val
         internal static int GetValidatedIntList(IEnumerable<int> validationList, string instruction)
         {
             while (true)
@@ -185,7 +191,7 @@ namespace Bokningsappen.Logic
                 }
                 else
                 {
-                    Validator.WrongInput("Felaktig inmatning");
+                    Validator.WrongInput("Felaktig inmatning apa");
                     if (Validator.ExitChoice())
                     {
                         return -1;
@@ -193,12 +199,12 @@ namespace Bokningsappen.Logic
                 }
             }
         }
-
+        //KLAR
         internal static void WrongInput(string instruction)
         {
             Console.WriteLine(instruction + ", försök igen eller tryck <TAB> för att gå tillbaka");
         }
-
+        //KLAR
         internal static bool ExitChoice()
         {
             var key = Console.ReadKey(true).Key;

@@ -65,7 +65,7 @@ namespace Bokningsappen.Logic
                 Console.WriteLine("---------------------------------------------------------------");
             }
         }
-
+        //KLAR
         internal static void ShowLoggedinUsersBookings(User user)
         {
             using (var db = new MyDbContext())
@@ -91,14 +91,14 @@ namespace Bokningsappen.Logic
                              };
 
                 Console.WriteLine("Här är dina bokade pass: ");
-                Console.WriteLine("------------------------------------------------------------------");
+                Console.WriteLine("------------------------------------------------------------------------");
                 Console.WriteLine("Skift" + "   \t\t" + "Avdelning" + "   \t\t" + "År/vecka" + "  \t" + "Dag ");
                 Console.WriteLine();
                 foreach (var u in result.Where(u => u.UserId == user.Id))
                 {
                     Console.WriteLine(u.ShiftName + "    \t\t" + u.UnitName + "  \t\t" + u.Year + "/" + u.Week + "\t\t" + System.Enum.GetName(typeof(Enum.Day), u.Day));
                 }
-                Console.WriteLine("---------------------------------------------------------------");
+                Console.WriteLine("------------------------------------------------------------------------");
             }
         }
         //KLAR
@@ -149,7 +149,9 @@ namespace Bokningsappen.Logic
                 string[] shifts = { "Förmiddag", "Eftermiddag", "Natt" };
 
                 int selectedWeek = Validator.GetValidatedIntInRange("Vilken vecka vill du visa bokningar för? ", 1, 52);
+                if (selectedWeek == -1) return;
                 string selectedUnit = Validator.ValidateUnit();
+                if (selectedUnit == null) return;
 
                 bool runProgram = true;
                 while (runProgram)
@@ -218,7 +220,6 @@ namespace Bokningsappen.Logic
                     CountBookingsPerWeek(selectedWeek, selectedUnit);
                     Console.WriteLine();
                     Console.WriteLine();
-
                     if (selectedWeek > 1)
                     {
                         Console.Write("[F]öregående vecka \t\t");
@@ -247,14 +248,16 @@ namespace Bokningsappen.Logic
                             break;
                         case ConsoleKey.B:
                             selectedUnit = Validator.ValidateUnit();
+                            if (selectedUnit == null) return;
                             break;
                         case ConsoleKey.T:
                             runProgram = false;
                             break;
-                    }
+                    }                                     
                 }
             }
         }
+      
         //Fixa till procent?
         internal static void CountBookingsPerWeek(int selectedWeek, string selectedUnit)
         {
@@ -281,7 +284,7 @@ namespace Bokningsappen.Logic
                 }
             }
         }
-
+        //KLAR
         internal static void ShowLoggedInUsersSalary(User user)
         {
             using (var db = new MyDbContext())
@@ -321,11 +324,10 @@ namespace Bokningsappen.Logic
                     totalSalary += salary;
                 }
                 Console.WriteLine();
-                Console.WriteLine("Total lön för dina bokningar: " + totalSalary + " kr");
-
+                Console.WriteLine("Total lön för dina bokningar: " + totalSalary + " kr före skatt");
             }
         }
-
+        //KLAR
         internal static void ShowSalaryForEmployees()
         {
             using (var db = new MyDbContext())
@@ -370,13 +372,13 @@ namespace Bokningsappen.Logic
                         Console.WriteLine();
                     }
                     Console.WriteLine();
-                    Console.WriteLine("Total lön: " + totalSalary + " kr");
+                    Console.WriteLine("Total lön: " + totalSalary + " kr före skatt");
                     Console.WriteLine("--------------------------------------------------");
                     Console.WriteLine();
                 }
             }
         }
-
+        //KLAR
         internal static void ShowMostBookedStaff()
         {
             using (var db = new MyDbContext())
@@ -391,7 +393,7 @@ namespace Bokningsappen.Logic
                 }
             }
         }
-
+        //KLAR
         internal static void ShowMostBookedUnit()
         {
             using (var db = new MyDbContext())
