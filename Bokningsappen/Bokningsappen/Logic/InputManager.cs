@@ -23,7 +23,7 @@ namespace Bokningsappen.Logic
                 ShowManager.ShowEmployees();
                 Console.Write("Ange följande uppgifter om den anställda:");
                 Console.WriteLine();
-                var newTitle = Validator.ValidateTitle("Titel (USK/ADM): ").ToUpper();
+                var newTitle = Validator.ValidateTitle("Titel (USK/ADM): ");              
                 if (newTitle == null) return;
                 var newBirthDate = Validator.GetFixedStringLength("Födelsedatum (YYYYMMDD-XXXX): ", "YYYYMMDD-XXXX".Length);
                 if (newBirthDate == null) return;
@@ -72,6 +72,7 @@ namespace Bokningsappen.Logic
                 Console.WriteLine(newFirstName + " " + newLastName + " är nu tillagd!");
             }
         }
+     
         internal static bool ChangeEmployeeInfo()
         {
             while (true)
@@ -169,6 +170,7 @@ namespace Bokningsappen.Logic
                             printInfo = "Bokningen genomförd";
                             database.Add(newBooking);
                             database.SaveChanges();
+                            
                             success = true;
                         }
                         else
@@ -182,6 +184,7 @@ namespace Bokningsappen.Logic
                     }
 
                     Console.WriteLine(printInfo);
+                    GUI.PressAnyKey();
                 }
             }
         }
@@ -214,6 +217,7 @@ namespace Bokningsappen.Logic
                         {
                             return;
                         }
+                       
                         Console.Clear();
                     }
                 }

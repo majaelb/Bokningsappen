@@ -51,8 +51,7 @@ namespace Bokningsappen.Menus
                     case ConsoleKey.NumPad3:
                         Console.Clear();
                         Helper.ActiveChoice("Boka vikarie på pass");
-                        InputManager.BookEmployeeForShift();
-                        GUI.PressAnyKey();
+                        InputManager.BookEmployeeForShift();                   
                         Console.Clear();
                         break;
                     case ConsoleKey.D4:

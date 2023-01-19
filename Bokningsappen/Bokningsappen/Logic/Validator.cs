@@ -57,7 +57,7 @@ namespace Bokningsappen.Logic
         {
             while (true)
             {
-                string? title = GetValidatedString(instruction);
+                string? title = GetValidatedString(instruction).ToUpper();
                 if (title == null) return null;
                 if (title == "USK" || title == "ADM")
                 {
