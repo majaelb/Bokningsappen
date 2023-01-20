@@ -11,11 +11,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Dapper;
 
 namespace Bokningsappen.Logic
-{
+{  
     internal class InputManager
     {
         static readonly string connString = "Server=tcp:dbdemomaja.database.windows.net,1433;Initial Catalog=Bokningsappen;Persist Security Info=False;User ID=majasadmin;Password=onXPkQbvhHCh8Ap;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
-        //KLAR (kan man göra metod av return-kollen?)
+
         internal static void AddNewEmployee()
         {
             using (var database = new MyDbContext())
@@ -23,31 +23,34 @@ namespace Bokningsappen.Logic
                 ShowManager.ShowEmployees();
                 Console.Write("Ange följande uppgifter om den anställda:");
                 Console.WriteLine();
+
+                //Använder valideringsmetoder som även tar in en utskriftssträng, för att slippa massor av Console.Writeline
+
                 var newTitle = Validator.ValidateTitle("Titel (USK/ADM): ");              
-                if (newTitle == null) return;
+                if (newTitle == null) return; //Tar användaren ur metoden utan att göra klart. String returnerar null
                 var newBirthDate = Validator.GetFixedStringLength("Födelsedatum (YYYYMMDD-XXXX): ", "YYYYMMDD-XXXX".Length);
                 if (newBirthDate == null) return;
-                var newFirstName = Validator.GetValidatedString("Förnamn: ");
+                var newFirstName = Validator.GetString("Förnamn: ");
                 if (newFirstName == null) return;
-                var newLastName = Validator.GetValidatedString("Efternamn: ");
+                var newLastName = Validator.GetString("Efternamn: ");
                 if (newLastName == null) return;
-                var newAddress = Validator.GetValidatedString("Gatuadress och gatunummer: ");
+                var newAddress = Validator.GetString("Gatuadress och gatunummer: ");
                 if (newAddress == null) return;
-                var newPostalCode = Validator.GetValidatedIntInRange("Postnummer: ", 10000, 99999);
-                if (newPostalCode == -1) return;
-                var newCity = Validator.GetValidatedString("Stad: ");
+                var newPostalCode = Validator.GetIntInRange("Postnummer: ", 10000, 99999);
+                if (newPostalCode == -1) return; //Tar användaren ur metoden utan att göra klart. Int returnerar -1
+                var newCity = Validator.GetString("Stad: ");
                 if (newCity == null) return;
-                var newCountry = Validator.GetValidatedString("Land: ");
+                var newCountry = Validator.GetString("Land: ");
                 if (newCountry == null) return;
                 var newPhoneNumber = Validator.GetFixedStringLength("Telefonnummer: (070-1234567): ", "123-1234567".Length);
                 if (newPhoneNumber == null) return;
-                var newEmail = Validator.GetValidatedString("Mailadress: ");
+                var newEmail = Validator.GetString("Mailadress: ");
                 if (newEmail == null) return;
-                var newSalary = Validator.GetValidatedDouble("Timlön (kr): ");
+                var newSalary = Validator.GetDouble("Timlön (kr): ");
                 if (newSalary == -1) return;
                 var newUserName = Validator.GetFixedStringLength("Användarnamn (3 första bokstäverna i förnamnet och efternamnet): ".ToLower(), "aaabbb".Length);
                 if (newUserName == null) return;
-                var newPassWord = Validator.GetValidatedString("Lösenord: ");
+                var newPassWord = Validator.GetString("Lösenord: ");
                 if (newPassWord == null) return;
 
                 var newUser = new User
@@ -86,13 +89,15 @@ namespace Bokningsappen.Logic
                     }
                 }
                 ShowManager.ShowEmployees();
-                var id = Validator.GetValidatedIntList(validUserIds, "Ange Id på den person du vill ändra: ");
+                var id = Validator.GetIntList(validUserIds, "Ange Id på den person du vill ändra: "); //Tar in listan av UserId:s och kontrollerar
                 if (id == -1) return true;
                 ShowManager.ShowAllInfoEmployees(id);
-                string? column = Validator.GetValidatedString("Vilken kolumn vill du ändra på? ");
+                string? column = Validator.GetString("Vilken kolumn vill du ändra på? ");
                 if (column == null) return true;
-                string? newValue = Validator.GetValidatedString("Ange det nya värdet: ");
+                string? newValue = Validator.GetString("Ange det nya värdet: ");
                 if (newValue == null) return true;
+
+                //Använder Dapper för att uppdatera värden
 
                 int affectedRow = 0;
                 string sql = $"UPDATE [Users] SET [{column}] = '{newValue}' WHERE Id = {id}";
@@ -104,7 +109,7 @@ namespace Bokningsappen.Logic
                 return affectedRow > 0;
             }
         }
-        //KLAR
+       
         internal static void BookEmployeeForShift()
         {
             bool success = false;
@@ -133,17 +138,17 @@ namespace Bokningsappen.Logic
 
                     Console.Write("Ange följande uppgifter för att boka en anställd på passet:");
                     Console.WriteLine();
-                    var newEmId = Validator.GetValidatedIntList(validUserIds, "Den anställdas Id - nummer: ");
+                    var newEmId = Validator.GetIntList(validUserIds, "Den anställdas Id - nummer: ");
                     if (newEmId == -1) return; //Tar användaren ut ur metoden utan att göra klart
-                    var newShId = Validator.GetValidatedIntList(validShiftIds, "Skiftets Id-nummer (Fm = 1, Em = 2, Natt = 3): ");
+                    var newShId = Validator.GetIntList(validShiftIds, "Skiftets Id-nummer (Fm = 1, Em = 2, Natt = 3): ");
                     if (newShId == -1) return;
-                    var newUnId = Validator.GetValidatedIntList(validUnitIds, "Avdelningens Id-nummer (Freja 1 = 1, Freja 2 = 2, Freja 3 = 3): ");
+                    var newUnId = Validator.GetIntList(validUnitIds, "Avdelningens Id-nummer (Freja 1 = 1, Freja 2 = 2, Freja 3 = 3): ");
                     if (newUnId == -1) return;
-                    var newYear = Validator.GetValidatedIntInRange("År (YYYY): ", 2023, 2023);
+                    var newYear = Validator.GetIntInRange("År (YYYY): ", 2023, 2023); //Tillåter bara år 2023
                     if (newYear == -1) return;
-                    var newWeek = Validator.GetValidatedIntInRange("Vecka: ", 1, 52);
+                    var newWeek = Validator.GetIntInRange("Vecka: ", 1, 52); //Tillåter bara vecka 1-52
                     if (newWeek == -1) return;
-                    var newDay = Validator.GetValidatedIntInRange("Dag (1-7): ", 1, 7);
+                    var newDay = Validator.GetIntInRange("Dag (1-7): ", 1, 7); //Tillåter bara dag 1-7 (Enums)
                     if (newDay == -1) return;
 
                     var newBooking = new Booking
@@ -155,9 +160,9 @@ namespace Bokningsappen.Logic
                         Week = newWeek,
                         Day = newDay
                     };
-
+                    //Kontrollerar först om det finns någon bokning på de valda alternativen
                     var bookings = database.Bookings.Where(b => newShId == b.ShiftId && newUnId == b.UnitId && newYear == b.Year && newWeek == b.Week && newDay == b.Day);
-
+                    //Kontrollerar sedan om den valda användaren redan jobbar på en annan avdelning den dagen och tiden
                     var occupiedUser = database.Bookings.Where(b => newEmId == b.UserId && newShId == b.ShiftId && newYear == b.Year && newWeek == b.Week && newDay == b.Day);
 
                     string printInfo = "";
@@ -171,7 +176,7 @@ namespace Bokningsappen.Logic
                             database.Add(newBooking);
                             database.SaveChanges();
                             
-                            success = true;
+                            success = true; //Bokningen släpptes igenom och sparas om alla villkor uppfylls
                         }
                         else
                         {
@@ -188,7 +193,7 @@ namespace Bokningsappen.Logic
                 }
             }
         }
-        //KLAR
+      
         internal static void RemoveEmployeeFromShift()
         {
             using (var db = new MyDbContext())
@@ -197,7 +202,7 @@ namespace Bokningsappen.Logic
                 while (!success)
                 {
                     ShowManager.ShowAllBookings();
-                    int postId = Validator.GetValidatedInt("Ange Id för det pass du vill ta bort bokningen från: ");
+                    int postId = Validator.GetInt("Ange Id för det pass du vill ta bort bokningen från: ");
                     if (postId == -1) return; //Tar användaren ut ur metoden utan att göra klart
 
                     var deletePost = (from post in db.Bookings

@@ -17,9 +17,10 @@ namespace Bokningsappen.Logic
             {
                 bool failedLogin = true;
                 while (failedLogin)
-                {
+                {                   
                     Console.Write("Ange ditt användarnamn: ");
                     var username = Console.ReadLine();
+                    
                     Console.Write("Ange ditt lösenord: ");
                     var password = Console.ReadLine();
 
@@ -32,7 +33,7 @@ namespace Bokningsappen.Logic
                         Console.WriteLine("Välkommen " + loggedInUser.FirstName + " " + loggedInUser.LastName + "!");
                         GUI.PressAnyKey();
                         failedLogin = false;
-                        return loggedInUser;
+                        return loggedInUser; //Returnerar den inloggade användaren vid träff
                     }
                     else
                     {
@@ -47,7 +48,7 @@ namespace Bokningsappen.Logic
             return null;
         }
 
-        internal static void ShowUserMenu(User user)
+        internal static void ShowUserMenu(User user) //Kontrollerar vilken titel den inloggade användaren har och skickar den till rätt meny
         {
             if (user.Title == "ADM")
             {
@@ -61,7 +62,7 @@ namespace Bokningsappen.Logic
             }
         }
 
-        internal static void ActiveChoice(string choice)
+        internal static void ActiveChoice(string choice) //Skriver ut var på sidan man befinner sig efter ett knappval i en meny
         {
             Console.WriteLine("Aktivt val:");
             Console.ForegroundColor = ConsoleColor.Yellow;

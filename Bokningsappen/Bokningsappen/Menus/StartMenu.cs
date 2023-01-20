@@ -11,7 +11,7 @@ namespace Bokningsappen.Menus
 {
     internal class StartMenu
     {
-        public static void Option()
+        public static void PrintOptions()
         {
             Console.Clear();
             Console.WriteLine("Välkommen till Omsorgsbolaget");
@@ -26,7 +26,7 @@ namespace Bokningsappen.Menus
             bool runProgram = true;
             while (runProgram)
             {
-                Option();
+                PrintOptions();
                 var key = Console.ReadKey(true).Key;
 
                 switch (key)
@@ -35,11 +35,11 @@ namespace Bokningsappen.Menus
                     case ConsoleKey.NumPad1:
                         Console.Clear();
                         Helper.ActiveChoice("Logga in");
-                        User user = Helper.Login();
+                        User? user = Helper.Login();
                         if (user != null)
                         {
-                            Helper.ShowUserMenu(user);
-                        }
+                            Helper.ShowUserMenu(user); //Om användaren från loginmetoden inte är null skickas man vidare till rätt sida
+                        }                       
                         break;
                     case ConsoleKey.D2:
                     case ConsoleKey.NumPad2:
